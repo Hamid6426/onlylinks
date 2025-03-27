@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
-export default function SubscriptionBilling() {
+export default function Billing() {
   const [billingDetails, setBillingDetails] = useState({
     country: "US",
     city: "",
@@ -19,18 +20,19 @@ export default function SubscriptionBilling() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
+    <div className="bg-white border border-gray-200 shadow-md p-6 mb-6   rounded-md w-full">
       {/* Subscription Section */}
-      <div className="mb-6 text-center">
+      <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-700">Subscription</h2>
         <div className="border-b border-gray-200 my-4"></div>
-        <div className="bg-red-100 text-red-600 p-4 rounded-md">
-          <p>You don't have a subscription.</p>
-          <a href="https://onlylinks.com/account/checkout">
-            <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md">
-              Subscribe
-            </button>
-          </a>
+        <div className="p-4 flex items-center justify-between bg-red-100 border border-red-400 text-red-700 rounded">
+          <p>You don't have a subscription</p>
+          <Link
+            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-purple-500"
+            href="/account/billing"
+          >
+            Subscribe
+          </Link>
         </div>
       </div>
 
@@ -143,7 +145,7 @@ export default function SubscriptionBilling() {
           {/* Update Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded-md"
+            className="w-full bg-gray-600 text-white p-2 rounded-md"
           >
             Update
           </button>

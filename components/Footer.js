@@ -12,7 +12,6 @@ export default function Footer() {
           Terms
         </Link>
         <Link href="/help" className="hover:text-[#8129d9]">
-          {" "}
           Help
         </Link>
         <Link href="/privacy-policy" className="hover:text-[#8129d9]">

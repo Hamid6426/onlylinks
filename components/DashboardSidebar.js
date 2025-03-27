@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   BiLinkAlt,
   BiBarChart,
@@ -35,7 +35,7 @@ const dropdowns = {
     {
       name: user.name,
       icon: <BiUserPlus />,
-      href: `/${user.slug}`, // Fixed interpolation
+      href: `/${user.slug}`,
       isImage: false,
     },
     { name: "Add account", icon: <BiUserPlus />, href: "/login" },
@@ -92,13 +92,19 @@ function Dropdown({ title, icon, options, isOpen, toggle }) {
 export default function DashboardSidebar() {
   const [activeDropdown, setActiveDropdown] = useState("");
   const pathname = usePathname();
+  const router = useRouter();
 
   const toggleDropdown = (name) => {
     setActiveDropdown(activeDropdown === name ? "" : name);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove token from localStorage
+    router.push("/login"); // Redirect to login page
+  };
+
   return (
-    <div className="border-r border-gray-300 w-64 h-screen py-2 px-4">
+    <div className="border-r fixed border-gray-300 w-64 h-screen py-2 px-4">
       <nav className="flex flex-col h-full justify-between">
         <div>
           <Link href="/" className="flex justify-center mb-6">
@@ -171,13 +177,13 @@ export default function DashboardSidebar() {
         </div>
 
         {/* Logout */}
-        <Link
-          href="/logout"
+        <button
+          onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2 rounded-lg hover:text-purple-500 font-medium"
         >
           <BiLogOut className="text-lg" />
           <span>Log Out</span>
-        </Link>
+        </button>
       </nav>
     </div>
   );

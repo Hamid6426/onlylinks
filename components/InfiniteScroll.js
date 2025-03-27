@@ -33,7 +33,7 @@ const InfiniteScroll = () => {
           >
             <p>{user}</p>
             <Image
-              src="logo-icon.svg"
+              src="onlylinks-icon.svg"
               width={40}
               height={40}
               alt="Logo"

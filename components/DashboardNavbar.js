@@ -3,7 +3,14 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { MdMenu, MdClose } from "react-icons/md";
-import { BiLinkAlt, BiPalette, BiMobile, BiShare, BiCopy } from "react-icons/bi";
+import {
+  BiLinkAlt,
+  BiPalette,
+  BiMobile,
+  BiShare,
+  BiCopy,
+} from "react-icons/bi";
+import Link from "next/link";
 
 export default function DashboardNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,11 +23,9 @@ export default function DashboardNavbar() {
   };
 
   return (
-    <>
-      <header className="w-full bg-[#fafafa] shadow-md">
-        <div className="flex justify-between items-center max-w-6xl mx-auto px-6 py-3">
-          
-          {/* Menu Toggle (Mobile) */}
+    <main className="w-[calc(100%_-_16rem)] h-14">
+      <header className="w-[calc(100%_-_16rem)] flex items-center h-14 bg-[#fafafa] shadow-md fixed top-0 right-0">
+        <div className="flex justify-between items-center px-6 w-full">
           <button
             className="sm:hidden text-[#4c4c4c] focus:outline-none"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -28,30 +33,22 @@ export default function DashboardNavbar() {
             {menuOpen ? <MdClose size={28} /> : <MdMenu size={28} />}
           </button>
 
-          {/* Logo */}
-          {/* <span className="flex items-center">
-            <Image
-              src="/dist/img/logo.svg?t=1720722461"
-              width={150}
-              height={50}
-              alt="logo"
-              className="h-10 w-auto"
-            />
-          </span> */}
-
           {/* Desktop Buttons */}
           <div className="hidden sm:flex items-center gap-4">
-            <button className="flex items-center gap-2 text-[#4c4c4c] hover:text-[#8129d9]">
+            <Link
+              href="/account"
+              className="flex items-center gap-2 text-[#4c4c4c] hover:text-[#8129d9]"
+            >
               <BiLinkAlt size={20} />
               <span>Links</span>
-            </button>
-            <button className="flex items-center gap-2 text-[#4c4c4c] hover:text-[#8129d9]">
+            </Link>
+            <Link
+              href="/account/design"
+              className="flex items-center gap-2 text-[#4c4c4c] hover:text-[#8129d9]"
+            >
               <BiPalette size={20} />
               <span>Design</span>
-            </button>
-            <button className="flex items-center gap-2 text-[#4c4c4c] hover:text-[#8129d9]">
-              <BiMobile size={20} />
-            </button>
+            </Link>
           </div>
 
           {/* Share Button (Desktop) */}
@@ -66,7 +63,6 @@ export default function DashboardNavbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {menuOpen && (
           <div className="sm:hidden absolute top-[60px] left-0 w-full bg-[#fafafa] shadow-md p-4 flex flex-col gap-4">
             <button className="flex items-center gap-2 text-[#4c4c4c] hover:text-[#8129d9]">
@@ -91,12 +87,14 @@ export default function DashboardNavbar() {
         )}
       </header>
 
-      {/* Share Modal */}
       {isShareOpen && (
         <div className="fixed top-0 right-0 w-80 bg-white shadow-lg p-4 z-50 border border-gray-300">
           <div className="flex justify-between items-center mb-3">
             <h5 className="text-lg font-semibold">Share your link</h5>
-            <button onClick={() => setIsShareOpen(false)} className="text-gray-500 hover:text-black">
+            <button
+              onClick={() => setIsShareOpen(false)}
+              className="text-gray-500 hover:text-black"
+            >
               <MdClose size={24} />
             </button>
           </div>
@@ -111,7 +109,12 @@ export default function DashboardNavbar() {
             className="mt-3 w-full h-10 cursor-pointer flex justify-between items-center border border-gray-300 px-3 rounded-md"
           >
             <div>
-              <Image src="/onlylinks-icon.svg" width={16} height={16} alt="logo-icon" />
+              <Image
+                src="/onlylinks-icon.svg"
+                width={16}
+                height={16}
+                alt="logo-icon"
+              />
             </div>
             <p className="text-sm text-gray-700">{userLink}</p>
             <p className="text-gray-500 hover:text-black">
@@ -120,6 +123,6 @@ export default function DashboardNavbar() {
           </button>
         </div>
       )}
-    </>
+    </main>
   );
 }

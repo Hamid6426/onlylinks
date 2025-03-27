@@ -1,18 +1,18 @@
-import Image from "next/image";
-import Hero from "./components/Hero";
-import Phone from "./components/Phone";
+import Hero from "@/components/Hero";
+import Phone from "@/components/Phone";
 import Link from "next/link";
-import InfiniteScroll from "./components/InfiniteScroll";
-import Navbar from "./components/Navbar";
+import InfiniteScroll from "@/components/InfiniteScroll";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <div className="">
-      <Navbar/>
+      <Navbar />
       <Hero />
       <div className="grid grid-cols-2 max-w-4xl mx-auto place-items-center">
         <Phone />
-        <div className="flex flex-col text-lg font-semibold gap-3">  
+        <div className="flex flex-col text-lg font-semibold gap-3">
           <p>
             Link your Instagram, Twitter, Snapchat, Youtube or any other
             website!
@@ -34,7 +34,8 @@ export default function Home() {
         </div>
       </div>
 
-      <InfiniteScroll/>
+      <InfiniteScroll />
+      <Footer />
     </div>
   );
 }

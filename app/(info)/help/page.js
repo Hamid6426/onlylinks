@@ -98,7 +98,7 @@ const ContactForm = () => {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+        <button type="submit" className="w-full bg-gray-600 text-white p-2 rounded hover:bg-purple-500">
           Send
         </button>
       </form>

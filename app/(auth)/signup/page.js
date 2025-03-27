@@ -152,7 +152,7 @@ const Signup = () => {
         {/* Login Link */}
         <p className="mt-3 text-sm text-gray-600 text-center">
           Already have an account?{" "}
-          <a href="./login" className="font-semibold text-blue-500">
+          <a href="/login" className="font-semibold text-blue-500">
             Login
           </a>
         </p>

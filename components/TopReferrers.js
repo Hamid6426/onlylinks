@@ -11,7 +11,7 @@ const referrers = [
 ];
 
 export default function TopReferrers() {
-  const [viewType, setViewType] = useState<"views" | "clicks">("views");
+  const [viewType, setViewType] = useState("views");
 
   return (
     <div className="bg-white shadow-md p-4 rounded-md">
@@ -21,14 +21,14 @@ export default function TopReferrers() {
       {/* Toggle Views/Clicks */}
       <div className="flex justify-center space-x-4 mb-4 text-sm">
         <button
-          className={`analytics-link ${viewType === "views" ? "text-blue-600 font-bold" : "text-gray-500"}`}
+          className={`analytics-link ${viewType === "views" ? "text-gray-600 font-bold" : "text-gray-500"}`}
           onClick={() => setViewType("views")}
         >
           Views
         </button>
         <span>|</span>
         <button
-          className={`analytics-link ${viewType === "clicks" ? "text-blue-600 font-bold" : "text-gray-500"}`}
+          className={`analytics-link ${viewType === "clicks" ? "text-gray-600 font-bold" : "text-gray-500"}`}
           onClick={() => setViewType("clicks")}
         >
           Clicks
@@ -48,7 +48,7 @@ export default function TopReferrers() {
               <div className="flex items-center">
                 <div className="flex-1 bg-gray-300 rounded-md overflow-hidden">
                   <div
-                    className="h-2 bg-blue-600 rounded-md"
+                    className="h-2 bg-gray-600 rounded-md"
                     style={{ width: `${percentage}%` }}
                   ></div>
                 </div>

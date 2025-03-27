@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Phone() {
   return (
-    <div className="w-[220] h-[420] border-4 rounded-3xl border-gray-900 relative">
+    <div className="w-[220] h-[400] border-4 rounded-3xl border-gray-900 relative">
       {/* camera */}
       <div className="camera absolute top-2 w-full flex justify-center">
         <div className="flex rounded-full bg-black h-4 w-16 relative">

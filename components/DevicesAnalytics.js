@@ -11,7 +11,8 @@ const devices = [
 ];
 
 export default function DevicesAnalytics() {
-  const [viewType, setViewType] = useState<"views" | "clicks">("views");
+  // const [viewType, setViewType] = useState<"views" | "clicks">("views");
+  const [viewType, setViewType] = useState("views");
 
   // Prepare chart data
   const chartData = devices.map((device) => ({
@@ -46,14 +47,14 @@ export default function DevicesAnalytics() {
       {/* Toggle Views/Clicks */}
       <div className="flex justify-center space-x-4 mt-4 text-sm">
         <button
-          className={`analytics-link ${viewType === "views" ? "text-blue-600 font-bold" : "text-gray-500"}`}
+          className={`analytics-link ${viewType === "views" ? "text-gray-600 font-bold" : "text-gray-500"}`}
           onClick={() => setViewType("views")}
         >
           Views
         </button>
         <span>|</span>
         <button
-          className={`analytics-link ${viewType === "clicks" ? "text-blue-600 font-bold" : "text-gray-500"}`}
+          className={`analytics-link ${viewType === "clicks" ? "text-gray-600 font-bold" : "text-gray-500"}`}
           onClick={() => setViewType("clicks")}
         >
           Clicks

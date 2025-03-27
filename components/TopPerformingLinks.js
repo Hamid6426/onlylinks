@@ -32,7 +32,7 @@ export default function TopPerformingLinks() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline truncate"
+                className="text-gray-600 hover:underline truncate"
               >
                 {link.url}
               </a>
