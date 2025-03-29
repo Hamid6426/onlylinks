@@ -31,7 +31,7 @@ export default function Navbar() {
             Login
           </Link>
           <Link
-            href="/signup"
+            href="/choose-username"
             className="block py-[6px] px-3 rounded-md bg-[#4c4c4c] hover:bg-[#8129d9] text-white"
           >
             Sign Up
