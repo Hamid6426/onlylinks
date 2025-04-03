@@ -1,11 +1,10 @@
 // utils/email.js
-const nodemailer = require('nodemailer');
-require("dotenv").config();
+import nodemailer from "nodemailer";
 
-const sendEmail = async (to, subject, htmlContent) => {
+export const sendEmail = async (to, subject, htmlContent) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
@@ -19,9 +18,7 @@ const sendEmail = async (to, subject, htmlContent) => {
       html: htmlContent,
     });
   } catch (error) {
-    console.error('Email sending error:', error);
-    throw new Error('Email could not be sent');
+    console.error("Email sending error:", error);
+    throw new Error("Email could not be sent");
   }
-};
-
-module.exports = sendEmail;
+}

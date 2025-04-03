@@ -23,7 +23,7 @@ export default function DashboardNavbar() {
   };
 
   return (
-    <main className="w-[calc(100%_-_16rem)] h-14">
+    <main className="w-[calc(100%_-_16rem)] h-14 z-50">
       <header className="w-[calc(100%_-_16rem)] flex items-center h-14 bg-[#fafafa] shadow-md fixed top-0 right-0">
         <div className="flex justify-between items-center px-6 w-full">
           <button

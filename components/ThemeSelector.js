@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 
 const themes = [
@@ -54,9 +55,11 @@ const ThemeSelector = () => {
             style={{ backgroundImage: theme.image ? `url(${theme.image})` : "none" }}
           >
             <div className="absolute top-2 left-2 flex items-center space-x-2">
-              <img
-                src="/dist/img/profile-picture.png"
-                alt=""
+              <Image
+                src="/onlylinks-icon.svg"
+                width={20}
+                height={20}
+                alt="profile pic"
                 className="w-8 h-8 rounded-full border"
               />
               <span className={`text-[10px] font-medium ${theme.textColor}`}>

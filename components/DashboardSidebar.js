@@ -55,9 +55,7 @@ function Dropdown({ title, icon, options, isOpen, toggle }) {
           {icon}
           <span>{title}</span>
         </div>
-        <BiChevronDown
-          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
-        />
+        <BiChevronDown className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
       {isOpen && (
         <div className="absolute left-0 w-full mt-2 rounded-lg z-10 bg-white shadow-md border border-gray-200">
@@ -99,8 +97,9 @@ export default function DashboardSidebar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token from localStorage
-    router.push("/login"); // Redirect to login page
+    // Remove token from localStorage and redirect to login page
+    localStorage.removeItem("token");
+    router.push("/login");
   };
 
   return (
@@ -108,12 +107,7 @@ export default function DashboardSidebar() {
       <nav className="flex flex-col h-full justify-between">
         <div>
           <Link href="/" className="flex justify-center mb-6">
-            <Image
-              src="/onlylinks-logo.svg"
-              alt="logo"
-              width={200}
-              height={80}
-            />
+            <Image src="/onlylinks-logo.svg" alt="logo" width={200} height={80} />
           </Link>
 
           {/* Main Navigation */}
@@ -126,9 +120,7 @@ export default function DashboardSidebar() {
                 key={name}
                 href={href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium ${
-                  pathname === href
-                    ? "text-purple-500"
-                    : "hover:text-purple-500"
+                  pathname === href ? "text-purple-500" : "hover:text-purple-500"
                 }`}
               >
                 {icon}
@@ -139,17 +131,13 @@ export default function DashboardSidebar() {
 
           {/* Account Section */}
           <div className="mt-6 space-y-4">
-            <h3 className="text-gray-400 uppercase bg-white text-sm font-medium">
-              Account
-            </h3>
+            <h3 className="text-gray-400 uppercase text-sm font-medium">Account</h3>
             {accountItems.map(({ name, icon, href }) => (
               <Link
                 key={name}
                 href={href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium ${
-                  pathname === href
-                    ? "text-purple-500"
-                    : "hover:text-purple-500"
+                  pathname === href ? "text-purple-500" : "hover:text-purple-500"
                 }`}
               >
                 {icon}
@@ -179,7 +167,7 @@ export default function DashboardSidebar() {
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2 rounded-lg hover:text-purple-500 font-medium"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg hover:text-red-500 font-medium transition-colors"
         >
           <BiLogOut className="text-lg" />
           <span>Log Out</span>

@@ -13,17 +13,9 @@ export default function Home() {
       <div className="grid grid-cols-2 max-w-4xl mx-auto place-items-center">
         <Phone />
         <div className="flex flex-col text-lg font-semibold gap-3">
-          <p>
-            Link your Instagram, Twitter, Snapchat, Youtube or any other
-            website!
-          </p>
-          <p>
-            Create your Onlylinks profile in seconds You are in complete
-            control,
-          </p>
-          <p>
-            there are NEVER any ads on your profile! We are here to grow your
-          </p>
+          <p>Link your Instagram, Twitter, Snapchat, Youtube or any other website!</p>
+          <p>Create your Onlylinks profile in seconds You are in complete control,</p>
+          <p>there are NEVER any ads on your profile! We are here to grow your</p>
           <p>brand not ours!</p>
           <Link
             href="/signup"

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
+import ResendVerification from "@/components/ResendVerification";
 
 const Signup = () => {
   const searchParams = useSearchParams();
@@ -60,17 +61,10 @@ const Signup = () => {
             </button>
           </div>
 
-          <h2 className="mt-1 text-xl font-bold text-center">
-            Now, create your account
-          </h2>
+          <h2 className="mt-1 text-xl font-bold text-center">Now, create your account</h2>
 
           <form onSubmit={handleSignup} autoComplete="off" className="mt-3">
-            <input
-              autoComplete="off"
-              name="hidden"
-              type="text"
-              className="hidden"
-            />
+            <input autoComplete="off" name="hidden" type="text" className="hidden" />
 
             <input
               className="w-full p-2 border rounded mt-3"
@@ -102,10 +96,7 @@ const Signup = () => {
 
             {error && <p className="text-red-500 mt-2">{error}</p>}
 
-            <button
-              className="w-full p-2 text-white bg-blue-500 rounded-md mt-3"
-              type="submit"
-            >
+            <button className="w-full p-2 text-white bg-blue-500 rounded-md mt-3" type="submit">
               Create Account
             </button>
           </form>
@@ -114,12 +105,11 @@ const Signup = () => {
 
       {signupSuccess && (
         <div className="text-center">
-          <h3 className="text-lg font-bold text-green-600">
-            Signup Successful!
-          </h3>
+          <h3 className="text-lg font-bold text-green-600">Signup Successful!</h3>
           <p className="text-green-500">
             Verification link was sent to your email <strong>{email}</strong>
           </p>
+          <ResendVerification email={email} />
         </div>
       )}
 

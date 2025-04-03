@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function PreviewPhone() {
   return (
-    <div className="w-[270] h-auto aspect-[9/17] border-4 rounded-3xl border-gray-900 relative">
+    <div className="min-w-[180px] min-h-[340px] max-w-[180px] max-h-[340px] block border-4 rounded-3xl border-gray-900 relative">
       {/* camera */}
       <div className="camera absolute top-2 w-full flex justify-center">
         <div className="flex rounded-full bg-black h-4 w-16 relative">
