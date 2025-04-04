@@ -1,8 +1,10 @@
+// app/page.js or the component where you're using this code
 import React from "react";
 import { MdLocationPin } from "react-icons/md";
 import Link from "next/link";
 
-export default function Phone() {
+export default function Phone({ searchParams }) {
+  const country = searchParams?.country || 'United States'; // Safe fallback to 'Unknown' if country is missing
   return (
     <div className="w-[220px] h-[400px] border-4 rounded-3xl border-gray-900 relative bg-gradient-to-b from-gray-900 to-gray-800">
       {/* camera */}
@@ -12,8 +14,8 @@ export default function Phone() {
         </div>
       </div>
 
-       {/* Profile */}
-       <div className="w-full absolute top-24 flex justify-center px-4">
+      {/* Profile */}
+      <div className="w-full absolute top-24 flex justify-center px-4">
         <div className="flex flex-col justify-start items-center gap-3 w-full">
           {/* Profile avatar */}
           <div className="w-16 h-16 block bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-md"></div>
@@ -24,7 +26,7 @@ export default function Phone() {
           {/* Location */}
           <div className="flex gap-1 items-center text-gray-400">
             <MdLocationPin className="text-purple-400" />
-            <span className="font-semibold text-xs">Pakistan</span>
+            <span className="font-semibold text-xs">{country}</span>
           </div>
           
           {/* Buttons */}
