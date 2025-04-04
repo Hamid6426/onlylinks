@@ -10,7 +10,7 @@ export default function Home() {
     <div className="">
       <Navbar />
       <Hero />
-      <div className="grid grid-cols-2 max-w-4xl mx-auto place-items-center">
+      <div className="grid grid-cols-2 max-w-4xl h-fit mx-auto place-items-center">
         <Phone />
         <div className="flex flex-col text-lg font-semibold gap-3">
           <p>Link your Instagram, Twitter, Snapchat, Youtube or any other website!</p>
