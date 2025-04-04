@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { getDecodedToken, getUserId } from "@/utils/decoded";
+import Image from "next/image";
 
 export default function BasicInfo() {
   const [decoded, setDecoded] = useState({});
@@ -81,7 +82,7 @@ export default function BasicInfo() {
       <div className="flex h-full items-center w-full">
         <div className="flex justify-center w-4/12">
           <label className="relative cursor-pointer">
-            <img src={profilePic} alt="Profile" className="w-24 h-24 rounded-full border border-gray-300" />
+            <Image src={profilePic} alt="Profile" className="w-24 h-24 rounded-full border border-gray-300" />
             <input
               type="file"
               accept="image/*"

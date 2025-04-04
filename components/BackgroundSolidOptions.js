@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 
 // Solid Background Options
@@ -97,9 +98,11 @@ const BackgroundImageOptions = () => {
             data-bg-preview="background_image"
             data-url="/upload/thumb/themes/thumb_bcdeb0f8_0ffa287ea44dec2eea8e9db49d7f2341.jpg"
           >
-            <img
+            <Image
               src="/upload/thumb/themes/thumb_bcdeb0f8_0ffa287ea44dec2eea8e9db49d7f2341.jpg"
               alt="preview"
+              width={100}
+              height={100}
             />
           </div>
           <div className="flex flex-1 flex-col">

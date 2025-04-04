@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
 const Login = () => {
   const [showReset, setShowReset] = useState(false);
@@ -73,16 +75,16 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <div className="flex justify-center mb-4">
-          <a href="/">
-            <img src="onlylinks-logo.svg" alt="logo" className="h-12" />
-          </a>
+          <Link href="/">
+            <Image width={100} height={100} src="onlylinks-logo.svg" alt="logo" className="h-12" />
+          </Link>
         </div>
 
         {showReset ? (
           <div>
             <h2 className="text-xl font-semibold text-center">Restore Password</h2>
             <p className="text-sm text-gray-600 mt-2 text-center">
-              Enter your email and we’ll send you a link to reset your password.
+              Enter your email and we&apos;ll send you a link to reset your password.
             </p>
             <form onSubmit={handleReset} className="mt-4">
               <input
@@ -140,10 +142,10 @@ const Login = () => {
             )}
             <div className="text-center mt-3 text-sm">
               <p>
-                Don't have an account?{" "}
-                <a href="./signup" className="text-blue-500">
+                Don&apos;t have an account?{" "}
+                <Link href="./signup" className="text-blue-500">
                   Signup
-                </a>
+                </Link>
               </p>
               <p>
                 <button onClick={() => setShowReset(true)} className="text-blue-500">

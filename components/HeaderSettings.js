@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 
 const HeaderSettings = () => {
@@ -28,10 +29,12 @@ const HeaderSettings = () => {
               <div className="profile-picture-container" id="profile-picture">
                 <label className="upload-picture-profile cursor-pointer">
                   <span className="preview-container relative inline-block">
-                    <img
+                    <Image
                       className="profile-pic-img rounded-full"
                       alt=""
                       src="/dist/img/profile-picture.png"
+                      width={100}
+                      height={100}  
                     />
                     <span className="upload-icon-container absolute inset-0 flex items-center justify-center">
                       <span className="upload-icon" role="button">

@@ -1,21 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import ResendVerification from "@/components/ResendVerification";
 
 const Signup = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const prefilledUsername = searchParams.get("username") || "";
+  const [prefilledUsername, setPrefilledUsername] = useState("");
   const [username] = useState(prefilledUsername);
   const [name, setName] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    // This code only runs on the client side
+    const searchParams = new URLSearchParams(window.location.search);
+    setPrefilledUsername(searchParams.get("username") || "");
+  }, []);
 
   const handleSignup = async (e) => {
     e.preventDefault();
