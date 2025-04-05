@@ -6,6 +6,7 @@ import Image from "next/image";
 
 const Login = () => {
   const [showReset, setShowReset] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
@@ -25,6 +26,7 @@ const Login = () => {
       setMessage({ type: "error", text: "Please fill all fields" });
       return;
     }
+    setLoading(true);
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -34,17 +36,24 @@ const Login = () => {
           password: formData.password,
         }),
       });
+
       const data = await response.json();
       if (response.ok) {
-        // Store token & user data immediately
         localStorage.setItem("token", data.token);
-        setMessage({ type: "success", text: "Login successful" });
-        router.push("/account");
+        setMessage({ type: "success", text: "Login successful, redirecting..." });
+
+        // Wait 3 seconds before redirect
+        setTimeout(() => {
+          router.push("/account");
+        }, 3000);
       } else {
         setMessage({ type: "error", text: data.error || "Login failed" });
       }
     } catch (error) {
       setMessage({ type: "error", text: "Internal error, please try again" });
+    } finally {
+      // Keep loading true during the timeout to show spinner until redirect
+      setTimeout(() => setLoading(false), 3000);
     }
   };
 
@@ -54,6 +63,7 @@ const Login = () => {
       setMessage({ type: "error", text: "Enter a valid email" });
       return;
     }
+    setLoading(true);
     try {
       const response = await fetch("/api/auth/reset", {
         method: "POST",
@@ -68,11 +78,13 @@ const Login = () => {
       }
     } catch (error) {
       setMessage({ type: "error", text: "Internal error, please try again" });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-full">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <div className="flex justify-center mb-4">
           <Link href="/">
@@ -95,8 +107,8 @@ const Login = () => {
                 onChange={handleInputChange}
                 required
               />
-              <button type="submit" className="mt-3 w-full bg-purple-500 text-white p-2 rounded-md">
-                Submit
+              <button type="submit" className="mt-3 w-full bg-purple-500 text-white p-2 rounded-md" disabled={loading}>
+                {loading ? "Sending..." : "Submit"}
               </button>
               <button
                 type="button"
@@ -127,8 +139,8 @@ const Login = () => {
                 onChange={handleInputChange}
                 required
               />
-              <button type="submit" className="mt-3 w-full bg-purple-500 text-white p-2 rounded-md">
-                Login
+              <button type="submit" className="mt-3 w-full bg-purple-500 text-white p-2 rounded-md" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
               </button>
             </form>
             {message.text && (
