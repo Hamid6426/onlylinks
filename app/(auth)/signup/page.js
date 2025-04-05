@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import ResendVerification from "@/components/ResendVerification";
 
+// Wrapping the Signup component with Suspense
 const Signup = () => {
   const searchParams = useSearchParams();
   const prefilledUsername = searchParams.get("username") || "";
@@ -137,4 +138,11 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+// Wrap the component in Suspense
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Signup />
+  </Suspense>
+);
+
+export default SuspenseWrapper;
