@@ -3,8 +3,6 @@ import DashboardNavbar from "@/components/DashboardNavbar";
 import DashboardSidebar from "@/components/DashboardSidebar";
 
 export default function layout({ children }) {
-
-
   return (
     <div className="flex flex-row w-screen overflow-x-hidden">
       <div className="w-64">

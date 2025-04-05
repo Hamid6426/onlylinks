@@ -15,7 +15,8 @@ import Link from "next/link";
 export default function DashboardNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
-  const userLink = "https://onlylinks.com/hamid";
+  const NEXT_PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const userLink = `${NEXT_PUBLIC_BASE_URL}/hamid`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(userLink);

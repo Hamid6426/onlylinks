@@ -25,12 +25,29 @@ const ContactForm = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      setSuccess(true);
-      setFormData({ category: "", name: "", email: "", message: "" });
-      setTimeout(() => setSuccess(false), 3000);
+      try {
+        const response = await fetch("/api/contact/post-contact-form", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          setSuccess(true);
+          setFormData({ category: "", name: "", email: "", message: "" });
+          setTimeout(() => setSuccess(false), 3000);
+        } else {
+          const result = await response.json();
+          setErrors({ submit: result.error });
+        }
+      } catch (error) {
+        setErrors({ submit: "An unexpected error occurred." });
+      }
     }
   };
 

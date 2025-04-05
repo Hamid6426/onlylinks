@@ -4,16 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  BiLinkAlt,
-  BiBarChart,
-  BiCog,
-  BiUser,
-  BiUserPlus,
-  BiFlag,
-  BiChevronDown,
-  BiLogOut,
-} from "react-icons/bi";
+import { BiLinkAlt, BiBarChart, BiCog, BiUser, BiUserPlus, BiFlag, BiChevronDown, BiLogOut } from "react-icons/bi";
 
 const user = {
   name: "Hamid",
@@ -26,9 +17,7 @@ const menuItems = [
   { name: "Analytics", icon: <BiBarChart />, href: "/account/analytics" },
 ];
 
-const accountItems = [
-  { name: "Settings", icon: <BiCog />, href: "/account/settings" },
-];
+const accountItems = [{ name: "Settings", icon: <BiCog />, href: "/account/settings" }];
 
 const dropdowns = {
   account: [
@@ -66,13 +55,7 @@ function Dropdown({ title, icon, options, isOpen, toggle }) {
               className="flex items-center gap-3 px-3 py-2 bg-white hover:bg-gray-100 rounded-lg font-medium"
             >
               {isImage ? (
-                <Image
-                  src={icon}
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                  alt={name}
-                />
+                <Image src={icon} width={32} height={32} className="rounded-full" alt={name} />
               ) : (
                 <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 text-gray-700 font-bold text-sm">
                   {name.charAt(0).toUpperCase()}
@@ -103,18 +86,16 @@ export default function DashboardSidebar() {
   };
 
   return (
-    <div className="border-r fixed border-gray-300 w-64 h-screen py-2 px-4">
+    <div className="border-r fixed border-gray-300 w-64 overflow-y-auto h-screen py-2 px-4">
       <nav className="flex flex-col h-full justify-between">
         <div>
           <Link href="/" className="flex justify-center mb-6">
-            <Image src="/onlylinks-logo.svg" alt="logo" width={200} height={80} />
+            <Image src="/onlylinks-logo.svg" alt="logo" width={100} height={40} className="w-48 h-20" />
           </Link>
 
           {/* Main Navigation */}
           <div className="space-y-3">
-            <h3 className="text-gray-400 uppercase text-sm font-medium">
-              {user.name}
-            </h3>
+            <h3 className="text-gray-400 uppercase text-sm font-medium">{user.name}</h3>
             {menuItems.map(({ name, icon, href }) => (
               <Link
                 key={name}

@@ -95,7 +95,7 @@ const Login = () => {
                 onChange={handleInputChange}
                 required
               />
-              <button type="submit" className="mt-3 w-full bg-blue-500 text-white p-2 rounded-md">
+              <button type="submit" className="mt-3 w-full bg-purple-500 text-white p-2 rounded-md">
                 Submit
               </button>
               <button
@@ -127,7 +127,7 @@ const Login = () => {
                 onChange={handleInputChange}
                 required
               />
-              <button type="submit" className="mt-3 w-full bg-blue-500 text-white p-2 rounded-md">
+              <button type="submit" className="mt-3 w-full bg-purple-500 text-white p-2 rounded-md">
                 Login
               </button>
             </form>
@@ -143,12 +143,12 @@ const Login = () => {
             <div className="text-center mt-3 text-sm">
               <p>
                 Don&apos;t have an account?{" "}
-                <Link href="./signup" className="text-blue-500">
+                <Link href="/choose-username" className="text-purple-500">
                   Signup
                 </Link>
               </p>
               <p>
-                <button onClick={() => setShowReset(true)} className="text-blue-500">
+                <button onClick={() => setShowReset(true)} className="text-purple-500">
                   Forgot password?
                 </button>
               </p>

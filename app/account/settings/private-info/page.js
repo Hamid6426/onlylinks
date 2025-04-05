@@ -155,7 +155,7 @@ export default function PrivateInfo() {
             name="category"
             value={formData.category}
             onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
             required
           >
             <option value="">Select Category</option>
@@ -172,7 +172,7 @@ export default function PrivateInfo() {
             <button
               type="button"
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="w-full flex justify-between items-center p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full flex justify-between items-center p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <span>{formData.country.name}</span>
               <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +203,7 @@ export default function PrivateInfo() {
             name="state"
             value={formData.state}
             onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
             required
           />
         </div>
@@ -216,7 +216,7 @@ export default function PrivateInfo() {
             name="city"
             value={formData.city}
             onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
             required
           />
         </div>
@@ -233,7 +233,7 @@ export default function PrivateInfo() {
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              className="flex-1 p-2 border rounded-r-md focus:ring-2 focus:ring-blue-500"
+              className="flex-1 p-2 border rounded-r-md focus:ring-2 focus:ring-purple-500"
               placeholder="Phone number"
               required
             />

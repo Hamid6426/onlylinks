@@ -45,7 +45,7 @@
     };
 
     return (
-      <div className="flex flex-col items-center p-6 bg-white shadow-md rounded-lg mx-auto mt-12 w-full max-w-md">
+      <div className="flex flex-col items-center p-6 border-2 border-gray-200 shadow-md rounded-lg mx-auto mt-12 w-full max-w-md">
         {/* Logo */}
         <Image src="onlylinks-logo.svg" alt="logo" width={200} height={80} />
 
@@ -80,7 +80,7 @@
 
           <button
             type="submit"
-            className={`w-full mt-3 p-2 text-white bg-blue-500 rounded-md ${
+            className={`w-full mt-3 p-2 text-white bg-purple-500 rounded-md ${
               username.trim().length >= 3 ? "cursor-pointer" : "cursor-not-allowed opacity-50"
             }`}
             disabled={username.trim().length < 3}
@@ -91,18 +91,18 @@
 
         <p className="mt-3 text-sm text-gray-600 text-center">
           Already have an account?{" "}
-          <a href="/login" className="font-semibold text-blue-500">
+          <a href="/login" className="font-semibold text-purple-500">
             Login
           </a>
         </p>
 
         <p className="mt-3 text-xs text-gray-600 text-center">
           By signing up, you agree to our{" "}
-          <a href="/terms/" target="_blank" className="text-blue-500">
+          <a href="/terms/" target="_blank" className="text-purple-500">
             Terms of Service
           </a>{" "}
           and{" "}
-          <a href="/privacy-policy/" target="_blank" className="text-blue-500">
+          <a href="/privacy-policy/" target="_blank" className="text-purple-500">
             Privacy Policy
           </a>
           .

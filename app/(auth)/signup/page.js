@@ -7,19 +7,15 @@ import { useSearchParams, useRouter } from "next/navigation";
 import ResendVerification from "@/components/ResendVerification";
 
 const Signup = () => {
-  const [prefilledUsername, setPrefilledUsername] = useState("");
+  const searchParams = useSearchParams();
+  const prefilledUsername = searchParams.get("username") || "";
   const [username] = useState(prefilledUsername);
   const [name, setName] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    // This code only runs on the client side
-    const searchParams = new URLSearchParams(window.location.search);
-    setPrefilledUsername(searchParams.get("username") || "");
-  }, []);
+  const router = useRouter();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -50,7 +46,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 bg-white shadow-md rounded-lg mx-auto mt-12 w-full max-w-md">
+    <div className="flex flex-col items-center p-6 border-2 border-gray-200 shadow-md rounded-lg mx-auto w-full max-w-md">
       {/* Logo */}
       <Image src="onlylinks-logo.svg" alt="logo" width={200} height={80} />
 
@@ -58,10 +54,12 @@ const Signup = () => {
         <>
           <div className="mt-3 w-full flex flex-col justify-between items-center">
             <Link href="/" className="w-full text-center text-lg mb-2">
-              <span className="font-semibold">{username}</span> is yours!
+              <p className="font-semibold">WAY TO GO!</p>
+              <span>username <span className="font-semibold text-purple-500 mx-2"> &quot;{username}&quot; </span> is yours!
+              </span>
             </Link>
-            <button className="text-blue-500" onClick={goBack}>
-              <i className="fa fa-chevron-left"></i> Change?
+            <button className="text-purple-500" onClick={goBack}>
+              <i className="fa fa-chevron-left"></i> Want to Change it?
             </button>
           </div>
 
@@ -100,7 +98,7 @@ const Signup = () => {
 
             {error && <p className="text-red-500 mt-2">{error}</p>}
 
-            <button className="w-full p-2 text-white bg-blue-500 rounded-md mt-3" type="submit">
+            <button className="w-full p-2 text-white bg-purple-500 rounded-md mt-3" type="submit">
               Create Account
             </button>
           </form>
@@ -119,18 +117,18 @@ const Signup = () => {
 
       <p className="mt-3 text-sm text-gray-600 text-center">
         Already have an account?{" "}
-        <a href="/login" className="font-semibold text-blue-500">
+        <a href="/login" className="font-semibold text-purple-500">
           Login
         </a>
       </p>
 
       <p className="mt-3 text-xs text-gray-600 text-center">
         By signing up, you agree to our{" "}
-        <a href="/terms/" target="_blank" className="text-blue-500">
+        <a href="/terms/" target="_blank" className="text-purple-500">
           Terms of Service
         </a>{" "}
         and{" "}
-        <a href="/privacy-policy/" target="_blank" className="text-blue-500">
+        <a href="/privacy-policy/" target="_blank" className="text-purple-500">
           Privacy Policy
         </a>
         .
