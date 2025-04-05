@@ -2,7 +2,7 @@
   import React, { useState } from "react";
   import { jwtDecode } from "jwt-decode";
 
-  const NewLinkModal = ({ closeModal, onLinkAdded }) => {
+  const CreateLinkModal = ({ closeModal, onLinkAdded }) => {
     const [title, setTitle] = useState("");
     const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
@@ -95,4 +95,4 @@
     );
   };
 
-  export default NewLinkModal;
+  export default CreateLinkModal;

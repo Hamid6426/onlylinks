@@ -1,22 +1,32 @@
-"use client";
+// "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-const PaymentSuccess = () => {
-  const [paymentStatus, setPaymentStatus] = useState(null);
+// const PaymentSuccess = () => {
+//   const [paymentStatus, setPaymentStatus] = useState(null);
 
-  useEffect(() => {
-    // Retrieve the payment status from the URL or your server
-    const status = new URLSearchParams(window.location.search).get("status");
-    setPaymentStatus(status);
-  }, []);
+//   useEffect(() => {
+//     // Retrieve the payment status from the URL or your server
+//     const status = new URLSearchParams(window.location.search).get("status");
+//     setPaymentStatus(status);
+//   }, []);
 
+//   return (
+//     <div>
+//       <h1>Payment {paymentStatus}</h1>
+//       {/* Display additional payment details here */}
+//     </div>
+//   );
+// };
+
+// export default PaymentSuccess;
+
+import React from 'react'
+
+export default function page() {
   return (
     <div>
-      <h1>Payment {paymentStatus}</h1>
-      {/* Display additional payment details here */}
+      
     </div>
-  );
-};
-
-export default PaymentSuccess;
+  )
+}

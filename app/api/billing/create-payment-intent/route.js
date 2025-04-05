@@ -1,20 +1,20 @@
-// pages/api/billing/create-payment-intent/route.js
-import Stripe from "stripe";
+// // pages/api/billing/create-payment-intent/route.js
+// import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export default async function handler(req, res) {
-  if (req.method === "POST") {
-    try {
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: req.body.amount,
-        currency: "usd",
-      });
-      res.status(200).json({ clientSecret: paymentIntent.client_secret });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  } else {
-    res.status(405).end(); // Method Not Allowed
-  }
-}
+// export default async function handler(req, res) {
+//   if (req.method === "POST") {
+//     try {
+//       const paymentIntent = await stripe.paymentIntents.create({
+//         amount: req.body.amount,
+//         currency: "usd",
+//       });
+//       res.status(200).json({ clientSecret: paymentIntent.client_secret });
+//     } catch (error) {
+//       res.status(500).json({ error: error.message });
+//     }
+//   } else {
+//     res.status(405).end(); // Method Not Allowed
+//   }
+// }

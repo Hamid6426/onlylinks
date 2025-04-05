@@ -6,21 +6,22 @@ const EditableLinkItem = ({ link, onUpdate, onDelete }) => {
   const [title, setTitle] = useState(link.title);
   const [url, setUrl] = useState(link.url);
   const [active, setActive] = useState(link.active);
+  const [position, setPosition] = useState(link.position); // New state for position
 
   const toggleEdit = () => setIsEditing(!isEditing);
 
   const handleSave = () => {
     setIsEditing(false);
-    onUpdate({ ...link, title, url, active });
+    onUpdate({ ...link, title, url, active, position });
   };
 
   return (
     <div className="mt-4" data-id={link.id}>
-      <div className="relative w-full bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+      <div className="relative w-full border-2 border-gray-200 bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
         <div className="flex items-start">
           {/* Drag Handle */}
           <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-md mr-4 select-none" draggable="false">
-          <svg className="svg-default opacity-50" focusable="false" viewBox="0 0 24 24" width="24" height="24">
+            <svg className="svg-default opacity-50" focusable="false" viewBox="0 0 24 24" width="24" height="24">
               <path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2m-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2"></path>
             </svg>
           </div>
@@ -71,6 +72,20 @@ const EditableLinkItem = ({ link, onUpdate, onDelete }) => {
                   </button>
                 )}
               </div>
+
+              {/* Position Field */}
+              {isEditing && (
+                <div>
+                  <label className="text-sm text-gray-600">Position</label>
+                  <input
+                    type="number"
+                    value={position}
+                    onChange={(e) => setPosition(parseInt(e.target.value))}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    min="1"
+                  />
+                </div>
+              )}
 
               {/* Actions: Save/Cancel & Toggle Active */}
               {isEditing && (
