@@ -14,11 +14,11 @@ export default function Home() {
       <Hero />
       <div className="mt-12 w-full relative grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto place-items-center">
         <Phone />
-        <div className="w-full flex flex-col text-lg font-semibold gap-3 text-wrap text-center py-8 md:py-0 px-3">
-          <p className="">Link your Instagram, Twitter, Snapchat, Youtube or any other website!</p>
-          <p>Create your Onlylinks profile in seconds You are in complete control,</p>
-          <p>there are NEVER any ads on your profile! We are here to grow your</p>
-          <p>brand not ours!</p>
+        <div className="w-full flex flex-col text-lg font-semibold gap-3 text-wrap  py-8 px-3">
+          <p className="text-center">Link your Instagram, Twitter, Snapchat, Youtube or any other website!</p>
+          <p className="text-center">Create your Onlylinks profile in seconds You are in complete control,</p>
+          <p className="text-center">there are NEVER any ads on your profile! We are here to grow your</p>
+          <p className="text-center">brand not ours!</p>
           <Link
             href="/signup"
             className="mx-auto w-60 mt-4 text-center py-[6px] rounded-md bg-[#4c4c4c] hover:bg-[#8129d9] text-white"
