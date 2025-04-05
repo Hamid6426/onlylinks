@@ -15,7 +15,7 @@ export default function DashboardWelcome() {
   return (
     <>
       <h1 className="font-bold text-2xl mb-4">
-        Hello, <span className="text-purple-500">"{decoded.username}"</span>
+        Hello, <span className="text-purple-500">&quot;{decoded.username}&quot;</span>
       </h1>
       <div className="p-4 flex items-center justify-between bg-red-100 border border-red-400 text-red-700 rounded">
         <p>You don&apos;t have a subscription</p>
