@@ -1,5 +1,4 @@
 // app/components/LinkItem.jsx
-
 import React, { useState, useRef, useEffect } from "react";
 import {
   MdClose,
@@ -159,6 +158,29 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
     }
   };
 
+  const uploadImage = async (file, linkId) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("linkId", linkId);
+  
+      const res = await fetch("/api/links/upload-image", {
+        method: "PATCH",
+        body: formData,
+      });
+  
+      console.log("→ status", res.status);
+      const data = await res.json();
+      console.log("→ payload", data);
+      if (!res.ok) throw new Error(data.error);
+      return data;
+    } catch (err) {
+      console.error("→ uploadImage error", err);
+      throw err;
+    }
+  };
+w  
+  
   // === JSX ===
   return (
     <div
@@ -278,7 +300,23 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
                 className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
               />
             </div>
-            <div className="p-4">{/* TODO: your image‐related controls (upload, crop, size, etc.) */}</div>
+            <div className="p-4 flex flex-col gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <span className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all">
+                  Upload Image
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    uploadImage(file, link.id);
+                  }}
+                  className="hidden"
+                />
+              </label>
+            </div>
           </div>
         )}
 
