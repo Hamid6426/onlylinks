@@ -1,71 +1,64 @@
 // app/components/LinkItem.jsx
 
 import React, { useState, useRef, useEffect } from "react";
-import { MdClose, MdDashboard, MdDragIndicator } from "react-icons/md";
-import { BiAlignLeft, BiAlignMiddle, BiAlignRight } from "react-icons/bi";
+import {
+  MdClose,
+  MdDashboard,
+  MdDragIndicator,
+  MdKeyboardDoubleArrowUp,
+  MdImage,
+  MdSchedule,
+  MdLaunch,
+  MdLock,
+  MdAnalytics,
+} from "react-icons/md";
 import ShareLinkButton from "@/app/account/components/ShareLinkButton";
 import { updateSettings } from "@/lib/updateSettings";
+import LinkOptionsMenu from "./LinkOptionsMenu";
 
-const Toggle = ({ label, checked, onChange }) => (
-  <label className="relative inline-flex items-center cursor-pointer">
-    <input type="checkbox" className="sr-only peer" checked={checked} onChange={(e) => onChange(e.target.checked)} />
-    <div
-      className="
-      w-10 h-6 bg-gray-300 peer-focus:ring-3 peer-focus:ring-gray-300 rounded-full
-      peer-checked:bg-purple-500 peer-checked:after:translate-x-4
-      after:content-[''] after:absolute after:top-1 after:left-1
-      after:bg-white after:border after:border-gray-300
-      after:rounded-full after:w-4 after:h-4
-      after:transition-all duration-300 ease-in-out
-    "
-    />
-    <span className="ml-2 select-none">{label}</span>
-  </label>
-);
+export default function LinkItem({ link, index, draggingIndex, handleDragStart, handleDragOver, handleDragEnd }) {
+  // --- which menu is open? ---
+  const [optionMenuOpen, setOptionMenuOpen] = useState(false);
+  const [imageMenuOpen, setImageMenuOpen] = useState(false);
+  const [animationMenuOpen, setAnimationMenuOpen] = useState(false);
+  const [scheduleMenuOpen, setScheduleMenuOpen] = useState(false);
+  const [redirectMenuOpen, setRedirectMenuOpen] = useState(false);
+  const [lockMenuOpen, setLockMenuOpen] = useState(false);
+  const [analyticsMenuOpen, setAnalyticsMenuOpen] = useState(false);
 
-const ALIGN_OPTIONS = [
-  { value: "left", Icon: BiAlignLeft },
-  { value: "center", Icon: BiAlignMiddle },
-  { value: "right", Icon: BiAlignRight },
-];
-
-const ANIMATION_OPTIONS = [
-  { value: "none", label: "none" },
-  { value: "bounce", label: "bounce" },
-  { value: "jello", label: "jello" },
-  { value: "wobble", label: "wobble" },
-  { value: "pulse", label: "pulse" },
-  { value: "shake", label: "shake" },
-  { value: "tada", label: "tada" },
-];
-
-const LinkItem = ({ link, index, draggingIndex, handleDragStart, handleDragOver, handleDragEnd }) => {
-  // initialize UI state from your link row
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isTextHidden, setIsTextHidden] = useState(link.text_hidden || false);
-  const [hasLinkShadow, setHasLinkShadow] = useState(link.link_shadow || false);
-  const [hasLinkOutline, setHasLinkOutline] = useState(link.outline  || false);
-  const [textSize, setTextSize] = useState(link.font_size || 15);
-  const [textAlign, setTextAlign] = useState(link.justify_content || "left");
-  const [layout, setLayout] = useState(link.layout || "card");
-  const [outlineColor, setOutlineColor] = useState(link.outline_color || "#ffffff");
-  const [outlineEffect, setOutlineEffect] = useState(
-    Array.isArray(link.special_outlines) && link.special_outlines.length > 0 ? link.special_outlines[0] : "clippath2"
-  );
-  const [animation, setAnimation] = useState(link.animation || "wobble");
-
+  // single ref for any open menu
   const menuRef = useRef(null);
 
-  // close menu on outside click
+  // close *any* menu on outside click
   useEffect(() => {
     const onClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuOpen(false);
+        setOptionMenuOpen(false);
+        setImageMenuOpen(false);
+        setAnimationMenuOpen(false);
+        setScheduleMenuOpen(false);
+        setRedirectMenuOpen(false);
+        setLockMenuOpen(false);
+        setAnalyticsMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
+
+  // --- helpers to toggle one menu & close the others ---
+  const openOnly = (setter) => {
+    // close all first
+    setOptionMenuOpen(false);
+    setImageMenuOpen(false);
+    setAnimationMenuOpen(false);
+    setScheduleMenuOpen(false);
+    setRedirectMenuOpen(false);
+    setLockMenuOpen(false);
+    setAnalyticsMenuOpen(false);
+    // open the one
+    setter((o) => !o);
+  };
 
   // === handlers that update both UI state + supabase ===
 
@@ -151,7 +144,7 @@ const LinkItem = ({ link, index, draggingIndex, handleDragStart, handleDragOver,
     } catch (err) {
       console.error(err);
     }
-  };  
+  };
 
   // === JSX ===
   return (
@@ -165,10 +158,12 @@ const LinkItem = ({ link, index, draggingIndex, handleDragStart, handleDragOver,
         ${draggingIndex === index ? "border-purple-500 bg-purple-50" : "border-gray-200"}
       `}
     >
+      {/* drag handle */}
       <div className="h-full flex items-center justify-center border-r-2 border-gray-100">
         <MdDragIndicator className="w-8 h-8 text-gray-700 mx-2 cursor-move" />
       </div>
 
+      {/* preview + controls */}
       <div className="w-full h-full flex flex-col justify-start items-start">
         {/* link preview */}
         <div className="p-4 h-28 text-gray-800">
@@ -182,124 +177,159 @@ const LinkItem = ({ link, index, draggingIndex, handleDragStart, handleDragOver,
         <div className="h-12 w-full flex items-center px-3 gap-3 border-t-2 border-gray-100">
           <ShareLinkButton />
 
+          {/* 1. Option */}
           <button
             type="button"
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={() => openOnly(setOptionMenuOpen)}
             className="flex items-center text-gray-600 hover:text-purple-600"
           >
             <MdDashboard className="h-6 w-6" />
           </button>
 
-          {menuOpen && (
-            <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
-              {/* header */}
-              <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
-                OPTIONS
-                <MdClose
-                  onClick={() => setMenuOpen(false)}
-                  className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
-                />
-              </div>
+          {/* 2. Image */}
+          <button
+            type="button"
+            onClick={() => openOnly(setImageMenuOpen)}
+            className="flex items-center text-gray-600 hover:text-purple-600"
+          >
+            <MdImage className="h-6 w-6" />
+          </button>
 
-              {/* controls */}
-              <div className="flex flex-col gap-4 p-3">
-                {/* Text Hidden */}
-                <Toggle label="Text Hidden" checked={isTextHidden} onChange={onTextHiddenChange} />
+          {/* 3. Animation */}
+          <button
+            type="button"
+            onClick={() => openOnly(setAnimationMenuOpen)}
+            className="flex items-center text-gray-600 hover:text-purple-600"
+          >
+            <MdKeyboardDoubleArrowUp className="h-6 w-6" />
+          </button>
 
-                {/* Text Size & Align */}
-                <div className="flex items-center gap-5">
-                  {/* size */}
-                  <div className="flex flex-col">
-                    <label className="mb-1 font-medium">Text Size</label>
-                    <select value={textSize} onChange={onTextSizeChange} className="px-3 w-40 py-2 border rounded">
-                      {Array.from({ length: 14 }, (_, i) => 11 + i).map((sz) => (
-                        <option key={sz} value={sz}>
-                          {sz}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+          {/* 4. Schedule */}
+          <button
+            type="button"
+            onClick={() => openOnly(setScheduleMenuOpen)}
+            className="flex items-center text-gray-600 hover:text-purple-600"
+          >
+            <MdSchedule className="h-6 w-6" />
+          </button>
 
-                  {/* align */}
-                  <div className="flex flex-col">
-                    <p className="mb-1 font-medium">Text Align</p>
-                    <div className="flex space-x-2">
-                      {ALIGN_OPTIONS.map(({ value, Icon }) => (
-                        <button
-                          key={value}
-                          type="button"
-                          onClick={() => onJustifyChange(value)}
-                          className={`
-                            p-2 border rounded
-                            ${textAlign === value ? "bg-purple-500 text-white" : "bg-gray-200 text-gray-700"}
-                          `}
-                        >
-                          <Icon size={20} />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+          {/* 5. Redirect */}
+          <button
+            type="button"
+            onClick={() => openOnly(setRedirectMenuOpen)}
+            className="flex items-center text-gray-600 hover:text-purple-600"
+          >
+            <MdLaunch className="h-6 w-6" />
+          </button>
 
-                {/* Link Shadow & Outline */}
-                <Toggle label="Link Shadow" checked={hasLinkShadow} onChange={onLinkShadowChange} />
-                <Toggle label="Link Outline" checked={hasLinkOutline} onChange={onLinkOutlineChange} />
+          {/* 6. Lock */}
+          <button
+            type="button"
+            onClick={() => openOnly(setLockMenuOpen)}
+            className="flex items-center text-gray-600 hover:text-purple-600"
+          >
+            <MdLock className="h-6 w-6" />
+          </button>
 
-                {/* Layout */}
-                <div className="flex flex-col">
-                  <p className="mb-1 font-medium">Layout</p>
-                  <div className="flex space-x-2">
-                    {["classic", "image", "card"].map((val) => (
-                      <button
-                        key={val}
-                        type="button"
-                        onClick={() => onLayoutChange(val)}
-                        className={`
-                          px-4 py-2 border rounded capitalize
-                          ${layout === val ? "ring-2 ring-purple-500 bg-purple-50" : "bg-gray-100"}
-                        `}
-                      >
-                        {val}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Outline Color & Effect (only if outline is on) */}
-                {hasLinkOutline && (
-                  <>
-                    <div className="flex flex-col">
-                      <label className="mb-1 font-medium">Outline Color</label>
-                      <input
-                        type="color"
-                        value={outlineColor}
-                        onChange={onOutlineColorChange}
-                        className="w-12 h-8 p-0 border-0"
-                      />
-                    </div>
-
-                    <div className="flex flex-col">
-                      <label className="mb-1 font-medium">Outline Effect</label>
-                      <select
-                        value={outlineEffect}
-                        onChange={onOutlineEffectChange}
-                        className="px-3 py-2 border rounded"
-                      >
-                        <option value="static">Static</option>
-                        <option value="glowing">Glowing</option>
-                        <option value="clippath">Clippath</option>
-                        <option value="clippath2">Clippath2</option>
-                      </select>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
+          {/* 7. Analytics */}
+          <button
+            type="button"
+            onClick={() => openOnly(setAnalyticsMenuOpen)}
+            className="flex items-center text-gray-600 hover:text-purple-600"
+          >
+            <MdAnalytics className="h-6 w-6" />
+          </button>
         </div>
+
+        {/* === Menus === */}
+
+        {/* 1. Options */}
+        {optionMenuOpen && <LinkOptionsMenu link={link} menuRef={menuRef} onClose={() => setOptionMenuOpen(false)} />}
+        
+        {/* 2. Image */}
+        {imageMenuOpen && (
+          <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
+            <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
+              IMAGE SETTINGS
+              <MdClose
+                onClick={() => setImageMenuOpen(false)}
+                className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
+              />
+            </div>
+            <div className="p-4">{/* TODO: your image‐related controls (upload, crop, size, etc.) */}</div>
+          </div>
+        )}
+
+        {/* 3. Animation */}
+        {animationMenuOpen && (
+          <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
+            <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
+              ANIMATION SETTINGS
+              <MdClose
+                onClick={() => setAnimationMenuOpen(false)}
+                className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
+              />
+            </div>
+            <div className="p-4">{/* you already have ANIMATION_OPTIONS, just render them here */}</div>
+          </div>
+        )}
+
+        {/* 4. Schedule */}
+        {scheduleMenuOpen && (
+          <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
+            <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
+              SCHEDULE
+              <MdClose
+                onClick={() => setScheduleMenuOpen(false)}
+                className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
+              />
+            </div>
+            <div className="p-4">{/* TODO: your scheduling UI */}</div>
+          </div>
+        )}
+
+        {/* 5. Redirect */}
+        {redirectMenuOpen && (
+          <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
+            <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
+              REDIRECT
+              <MdClose
+                onClick={() => setRedirectMenuOpen(false)}
+                className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
+              />
+            </div>
+            <div className="p-4">{/* TODO: controls for redirect URL, conditions, etc. */}</div>
+          </div>
+        )}
+
+        {/* 6. Lock */}
+        {lockMenuOpen && (
+          <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
+            <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
+              LOCK SETTINGS
+              <MdClose
+                onClick={() => setLockMenuOpen(false)}
+                className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
+              />
+            </div>
+            <div className="p-4">{/* TODO: password protect, pin code, etc. */}</div>
+          </div>
+        )}
+
+        {/* 7. Analytics */}
+        {analyticsMenuOpen && (
+          <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
+            <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
+              ANALYTICS
+              <MdClose
+                onClick={() => setAnalyticsMenuOpen(false)}
+                className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
+              />
+            </div>
+            <div className="p-4">{/* TODO: show click counts, trends, charts… */}</div>
+          </div>
+        )}
       </div>
     </div>
   );
-};
-
-export default LinkItem;
+}
