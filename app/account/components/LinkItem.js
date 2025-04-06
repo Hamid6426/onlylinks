@@ -11,10 +11,14 @@ import {
   MdLaunch,
   MdLock,
   MdAnalytics,
+  MdVisibility,
 } from "react-icons/md";
 import ShareLinkButton from "@/app/account/components/ShareLinkButton";
 import { updateSettings } from "@/lib/updateSettings";
 import LinkOptionsMenu from "./LinkOptionsMenu";
+import DeleteLinkButton from "@/components/DeleteLinkButton";
+import Link from "next/link";
+import { getDecodedToken, getUserId } from "@/utils/decoded";
 
 export default function LinkItem({ link, index, draggingIndex, handleDragStart, handleDragOver, handleDragEnd }) {
   // --- which menu is open? ---
@@ -25,6 +29,15 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
   const [redirectMenuOpen, setRedirectMenuOpen] = useState(false);
   const [lockMenuOpen, setLockMenuOpen] = useState(false);
   const [analyticsMenuOpen, setAnalyticsMenuOpen] = useState(false);
+
+  const [decoded, setDecoded] = useState({});
+  const [_userId, setUserId] = useState(null);
+
+  // Initialize on client side
+  useEffect(() => {
+    setDecoded(getDecodedToken());
+    setUserId(getUserId());
+  }, []);
 
   // single ref for any open menu
   const menuRef = useRef(null);
@@ -174,78 +187,87 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
         </div>
 
         {/* bottom bar */}
-        <div className="h-12 w-full flex items-center px-3 gap-3 border-t-2 border-gray-100">
-          <ShareLinkButton />
+        <div className="h-12 w-full flex justify-between items-center px-3 gap-3 border-t-2 border-gray-100">
+          <div className="flex items-center gap-3">
+            {/* 1. Option */}
+            <button
+              type="button"
+              onClick={() => openOnly(setOptionMenuOpen)}
+              className="flex items-center text-gray-600 hover:text-purple-600"
+            >
+              <MdDashboard className="h-6 w-6" />
+            </button>
 
-          {/* 1. Option */}
-          <button
-            type="button"
-            onClick={() => openOnly(setOptionMenuOpen)}
-            className="flex items-center text-gray-600 hover:text-purple-600"
-          >
-            <MdDashboard className="h-6 w-6" />
-          </button>
+            {/* 2. Image */}
+            <button
+              type="button"
+              onClick={() => openOnly(setImageMenuOpen)}
+              className="flex items-center text-gray-600 hover:text-purple-600"
+            >
+              <MdImage className="h-6 w-6" />
+            </button>
 
-          {/* 2. Image */}
-          <button
-            type="button"
-            onClick={() => openOnly(setImageMenuOpen)}
-            className="flex items-center text-gray-600 hover:text-purple-600"
-          >
-            <MdImage className="h-6 w-6" />
-          </button>
+            {/* 3. Animation */}
+            <button
+              type="button"
+              onClick={() => openOnly(setAnimationMenuOpen)}
+              className="flex items-center text-gray-600 hover:text-purple-600"
+            >
+              <MdKeyboardDoubleArrowUp className="h-6 w-6" />
+            </button>
 
-          {/* 3. Animation */}
-          <button
-            type="button"
-            onClick={() => openOnly(setAnimationMenuOpen)}
-            className="flex items-center text-gray-600 hover:text-purple-600"
-          >
-            <MdKeyboardDoubleArrowUp className="h-6 w-6" />
-          </button>
+            {/* 4. Schedule */}
+            <button
+              type="button"
+              onClick={() => openOnly(setScheduleMenuOpen)}
+              className="flex items-center text-gray-600 hover:text-purple-600"
+            >
+              <MdSchedule className="h-6 w-6" />
+            </button>
 
-          {/* 4. Schedule */}
-          <button
-            type="button"
-            onClick={() => openOnly(setScheduleMenuOpen)}
-            className="flex items-center text-gray-600 hover:text-purple-600"
-          >
-            <MdSchedule className="h-6 w-6" />
-          </button>
+            {/* 5. Redirect */}
+            <button
+              type="button"
+              onClick={() => openOnly(setRedirectMenuOpen)}
+              className="flex items-center text-gray-600 hover:text-purple-600"
+            >
+              <MdLaunch className="h-6 w-6" />
+            </button>
 
-          {/* 5. Redirect */}
-          <button
-            type="button"
-            onClick={() => openOnly(setRedirectMenuOpen)}
-            className="flex items-center text-gray-600 hover:text-purple-600"
-          >
-            <MdLaunch className="h-6 w-6" />
-          </button>
+            {/* 6. Lock */}
+            <button
+              type="button"
+              onClick={() => openOnly(setLockMenuOpen)}
+              className="flex items-center text-gray-600 hover:text-purple-600"
+            >
+              <MdLock className="h-6 w-6" />
+            </button>
 
-          {/* 6. Lock */}
-          <button
-            type="button"
-            onClick={() => openOnly(setLockMenuOpen)}
-            className="flex items-center text-gray-600 hover:text-purple-600"
-          >
-            <MdLock className="h-6 w-6" />
-          </button>
+            {/* 7. Analytics */}
+            <button
+              type="button"
+              onClick={() => openOnly(setAnalyticsMenuOpen)}
+              className="flex items-center text-gray-600 hover:text-purple-600"
+            >
+              <MdAnalytics className="h-6 w-6" />
+            </button>
+          </div>
 
-          {/* 7. Analytics */}
-          <button
-            type="button"
-            onClick={() => openOnly(setAnalyticsMenuOpen)}
-            className="flex items-center text-gray-600 hover:text-purple-600"
-          >
-            <MdAnalytics className="h-6 w-6" />
-          </button>
+          {/* HELPER BUTTONS */}
+          <div className="flex items-center gap-3">
+            <Link href={`/${decoded.username}`}>
+              <MdVisibility className="h-6 w-6 text-gray-600" />
+            </Link>
+            <ShareLinkButton />
+            <DeleteLinkButton />
+          </div>
         </div>
 
         {/* === Menus === */}
 
         {/* 1. Options */}
         {optionMenuOpen && <LinkOptionsMenu link={link} menuRef={menuRef} onClose={() => setOptionMenuOpen(false)} />}
-        
+
         {/* 2. Image */}
         {imageMenuOpen && (
           <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
