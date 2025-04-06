@@ -5,12 +5,19 @@ import useUserLinks from "@/utils/fetchLinks";
 import PreviewPhone from "@/app/account/components/PreviewPhone";
 import CreateLinkModal from "@/app/account/components/CreateLinkModal";
 import DashboardWelcome from "./components/DashboardWelcome";
-import LinkItem from "./components/LinkItem";  // New Import
-import { handleDragStart, handleDragOver, handleDragEnd } from "@/utils/dragHandlers";  // New Import
+import LinkItem from "./components/LinkItem"; // New Import
+import { handleDragStart, handleDragOver, handleDragEnd } from "@/utils/dragHandlers"; // New Import
 
-const BLANK_IMG = new Image();
-BLANK_IMG.src =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4DwQACfsD/QZhR0wAAAAASUVORK5CYII=";
+// Check if we are in a browser environment
+const isBrowser = typeof window !== "undefined";
+
+let BLANK_IMG;
+
+if (isBrowser) {
+  BLANK_IMG = new Image();
+  BLANK_IMG.src =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4DwQACfsD/QZhR0wAAAAASUVORK5CYII=";
+}
 
 export default function Account() {
   const { links, setLinks } = useUserLinks();
@@ -36,16 +43,11 @@ export default function Account() {
     <main className="flex gap-6 p-6">
       <div className="w-full">
         <DashboardWelcome />
-        <button
-          onClick={toggleModal}
-          className="mt-4 w-full py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
-        >
+        <button onClick={toggleModal} className="mt-4 w-full py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
           + New Link
         </button>
 
-        {modalOpen && (
-          <CreateLinkModal closeModal={toggleModal} onLinkAdded={addLink} />
-        )}
+        {modalOpen && <CreateLinkModal closeModal={toggleModal} onLinkAdded={addLink} />}
 
         {links.map((link, index) => (
           <LinkItem

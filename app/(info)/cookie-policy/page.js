@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const CookiePolicy = () => {
   return (
@@ -58,12 +59,12 @@ const CookiePolicy = () => {
       </h3>
       <p className="mt-2 text-gray-600">
         If you have any questions about our use of cookies, please email us at{" "}
-        <a
+        <Link
           href="mailto:support@onlylinks.com"
           className="text-blue-600 underline"
         >
           support@onlylinks.com
-        </a>
+        </Link>
         .
       </p>
     </section>
