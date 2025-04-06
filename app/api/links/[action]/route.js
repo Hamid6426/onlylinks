@@ -5,38 +5,42 @@ import { supabase } from "@/lib/supabaseClient";
 const ACTION_MAP = {
   "text-hide": {
     column: "text_hidden",
-    validate: (v) => typeof v === "boolean",
+    validate: (value) => typeof value === "boolean",
   },
   "link-shadow": {
     column: "link_shadow",
-    validate: (v) => typeof v === "boolean",
+    validate: (value) => typeof value === "boolean",
   },
   "link-outline": {
     column: "outline",
-    validate: (v) => typeof v === "boolean",
+    validate: (value) => typeof value === "boolean",
   },
   "link_layout": {  // Add this new entry
     column: "link_layout",
-    validate: (v) => ["classic", "image", "card"].includes(v),
+    validate: (value) => ["classic", "image", "card"].includes(value),
   },
   "justify-text": {
     column: "justify_content",
-    validate: (v) => ["left", "center", "right"].includes(v),
+    validate: (value) => ["left", "center", "right"].includes(value),
+  },
+  "animation-type": {
+    column: "animation_type",
+    validate: (value) => ["none", "bounce", "jello", "wobble", "pulse", "shake", "tada"].includes(value),
   },
   "text-size": {
     column: "font_size",
-    validate: (v) => Number.isInteger(v) && v > 0,
+    validate: (value) => Number.isInteger(value) && value > 0,
   },
   "outline-color": {
     column: "outline_color",
-    validate: (v) => typeof v === "string" && /^#([0-9A-F]{3}){1,2}$/i.test(v),
+    validate: (value) => typeof value === "string" && /^#([0-9A-F]{3}){1,2}$/i.test(value),
   },
   "outline-effect": {
     column: "special_outlines",
     // allow a single string or an array of strings
-    validate: (v) =>
-      (typeof v === "string" && ["static", "glowing", "clippath", "clippath2"].includes(v)) ||
-      (Array.isArray(v) && v.every((e) => ["static", "glowing", "clippath", "clippath2"].includes(e))),
+    validate: (value) =>
+      (typeof value === "string" && ["static", "glowing", "clippath", "clippath2"].includes(value)) ||
+      (Array.isArray(value) && value.every((event) => ["static", "glowing", "clippath", "clippath2"].includes(event))),
   },
 };
 

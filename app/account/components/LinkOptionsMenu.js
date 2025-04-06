@@ -15,29 +15,102 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
   const [layout, setLayout] = useState(link.layout || "card");
   const [outlineColor, setOutlineColor] = useState(link.outline_color || "#ffffff");
   const [outlineEffect, setOutlineEffect] = useState(
-    Array.isArray(link.special_outlines) && link.special_outlines.length > 0
-      ? link.special_outlines[0]
-      : "clippath2"
+    Array.isArray(link.special_outlines) && link.special_outlines.length > 0 ? link.special_outlines[0] : "clippath2"
   );
 
-  // generic helper to update both state + Supabase
-  const handleChange = (setter, settingType, value) => {
+  // === handlers that update both UI state + supabase ===
+
+  const onTextHiddenChange = async (checked) => {
+    setIsTextHidden(checked);
+    try {
+      await updateSettings("text-hide", link.id, checked);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onLinkShadowChange = async (checked) => {
+    setHasLinkShadow(checked);
+    try {
+      await updateSettings("link-shadow", link.id, checked);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onLinkOutlineChange = async (checked) => {
+    setHasLinkOutline(checked);
+    try {
+      await updateSettings("link-outline", link.id, checked);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onTextSizeChange = async (e) => {
+    const size = +e.target.value;
+    setTextSize(size);
+    try {
+      await updateSettings("text-size", link.id, size);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onJustifyChange = async (align) => {
+    setTextAlign(align);
+    try {
+      await updateSettings("justify-text", link.id, align);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onLayoutChange = async (val) => {
+    setLayout(val);
+    try {
+      await updateSettings("link-layout", link.id, val);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onOutlineColorChange = async (e) => {
+    const color = e.target.value;
+    setOutlineColor(color);
+    try {
+      await updateSettings("outline-color", link.id, color);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onOutlineEffectChange = async (e) => {
+    const effect = e.target.value;
+    setOutlineEffect(effect);
+    try {
+      await updateSettings("outline-effect", link.id, effect);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Generic handler to update both state and Supabase
+  const handleChange = async (setter, settingType, value) => {
     setter(value);
-    updateSettings(settingType, link.id, value).catch(console.error);
+    try {
+      await updateSettings(settingType, link.id, value);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
-    <div
-      ref={menuRef}
-      className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50"
-    >
+    <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
       {/* header */}
       <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
         OPTIONS
-        <MdClose
-          onClick={onClose}
-          className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
-        />
+        <MdClose onClick={onClose} className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer" />
       </div>
 
       {/* controls */}
@@ -45,7 +118,7 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
         <Toggle
           label="Text Hidden"
           checked={isTextHidden}
-          onChange={(v) => handleChange(setIsTextHidden, "text-hide", v)}
+          onChange={(value) => handleChange(setIsTextHidden, "text-hide", value)}
         />
 
         <div className="flex items-center gap-5">
@@ -54,14 +127,12 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
             <label className="mb-1 font-medium">Text Size</label>
             <select
               value={textSize}
-              onChange={(e) =>
-                handleChange(setTextSize, "text-size", +e.target.value)
-              }
+              onChange={(event) => handleChange(setTextSize, "text-size", +event.target.value)}
               className="px-3 w-40 py-2 border rounded"
             >
-              {Array.from({ length: 14 }, (_, i) => 11 + i).map((sz) => (
-                <option key={sz} value={sz}>
-                  {sz}
+              {Array.from({ length: 14 }, (_, i) => 11 + i).map((size) => (
+                <option key={size} value={size}>
+                  {size}
                 </option>
               ))}
             </select>
@@ -75,13 +146,9 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
                 <button
                   key={value}
                   type="button"
-                  onClick={() =>
-                    handleChange(setTextAlign, "justify-text", value)
-                  }
+                  onClick={() => handleChange(setTextAlign, "justify-text", value)}
                   className={`p-2 border rounded ${
-                    textAlign === value
-                      ? "bg-purple-500 text-white"
-                      : "bg-gray-200 text-gray-700"
+                    textAlign === value ? "bg-purple-500 text-white" : "bg-gray-200 text-gray-700"
                   }`}
                 >
                   <Icon size={20} />
@@ -94,32 +161,28 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
         <Toggle
           label="Link Shadow"
           checked={hasLinkShadow}
-          onChange={(v) => handleChange(setHasLinkShadow, "link-shadow", v)}
+          onChange={(value) => handleChange(setHasLinkShadow, "link-shadow", value)}
         />
         <Toggle
           label="Link Outline"
           checked={hasLinkOutline}
-          onChange={(v) => handleChange(setHasLinkOutline, "link-outline", v)}
+          onChange={(value) => handleChange(setHasLinkOutline, "link-outline", value)}
         />
 
         {/* Layout */}
         <div className="flex flex-col">
           <p className="mb-1 font-medium">Layout</p>
           <div className="flex space-x-2">
-            {["classic", "image", "card"].map((val) => (
+            {["classic", "image", "card"].map((value) => (
               <button
-                key={val}
+                key={value}
                 type="button"
-                onClick={() =>
-                  handleChange(setLayout, "link_layout", val)
-                }
+                onClick={() => handleChange(setLayout, "link_layout", value)}
                 className={`px-4 py-2 border rounded capitalize ${
-                  layout === val
-                    ? "ring-2 ring-purple-500 bg-purple-50"
-                    : "bg-gray-100"
+                  layout === value ? "ring-2 ring-purple-500 bg-purple-50" : "bg-gray-100"
                 }`}
               >
-                {val}
+                {value}
               </button>
             ))}
           </div>
@@ -133,9 +196,7 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
               <input
                 type="color"
                 value={outlineColor}
-                onChange={(e) =>
-                  handleChange(setOutlineColor, "outline-color", e.target.value)
-                }
+                onChange={(event) => handleChange(setOutlineColor, "outline-color", event.target.value)}
                 className="w-12 h-8 p-0 border-0"
               />
             </div>
@@ -143,9 +204,7 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
               <label className="mb-1 font-medium">Outline Effect</label>
               <select
                 value={outlineEffect}
-                onChange={(e) =>
-                  handleChange(setOutlineEffect, "outline-effect", e.target.value)
-                }
+                onChange={(event) => handleChange(setOutlineEffect, "outline-effect", event.target.value)}
                 className="px-3 py-2 border rounded"
               >
                 <option value="static">Static</option>

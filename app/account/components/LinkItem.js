@@ -18,6 +18,7 @@ import LinkOptionsMenu from "./LinkOptionsMenu";
 import DeleteLinkButton from "@/components/DeleteLinkButton";
 import Link from "next/link";
 import { getDecodedToken, getUserId } from "@/utils/decoded";
+import { ANIMATION_OPTIONS } from "@/utils/options";
 
 export default function LinkItem({ link, index, draggingIndex, handleDragStart, handleDragOver, handleDragEnd }) {
   // --- which menu is open? ---
@@ -28,6 +29,8 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
   const [redirectMenuOpen, setRedirectMenuOpen] = useState(false);
   const [lockMenuOpen, setLockMenuOpen] = useState(false);
   const [analyticsMenuOpen, setAnalyticsMenuOpen] = useState(false);
+
+  const [animation, setAnimation] = useState(link.animation_type || "none");
 
   const [decoded, setDecoded] = useState({});
   const [_userId, setUserId] = useState(null);
@@ -72,87 +75,15 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
     setter((o) => !o);
   };
 
-  // === handlers that update both UI state + supabase ===
-
-  const onTextHiddenChange = async (checked) => {
-    setIsTextHidden(checked);
-    try {
-      await updateSettings("text-hide", link.id, checked);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onLinkShadowChange = async (checked) => {
-    setHasLinkShadow(checked);
-    try {
-      await updateSettings("link-shadow", link.id, checked);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onLinkOutlineChange = async (checked) => {
-    setHasLinkOutline(checked);
-    try {
-      await updateSettings("link-outline", link.id, checked);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onTextSizeChange = async (e) => {
-    const size = +e.target.value;
-    setTextSize(size);
-    try {
-      await updateSettings("text-size", link.id, size);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onJustifyChange = async (align) => {
-    setTextAlign(align);
-    try {
-      await updateSettings("justify-text", link.id, align);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onLayoutChange = async (val) => {
-    setLayout(val);
-    try {
-      await updateSettings("link_layout", link.id, val);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onOutlineColorChange = async (e) => {
-    const color = e.target.value;
-    setOutlineColor(color);
-    try {
-      await updateSettings("outline-color", link.id, color);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onOutlineEffectChange = async (e) => {
-    const effect = e.target.value;
-    setOutlineEffect(effect);
-    try {
-      await updateSettings("outline-effect", link.id, effect);
-    } catch (err) {
-      console.error(err);
-    }
+  const handleChange = (setter, settingType, value) => {
+    setter(value);
+    updateSettings(settingType, link.id, value).catch(console.error);
   };
 
   const onAnimationChange = async (value) => {
     setAnimation(value);
     try {
-      await updateSettings("animation", link.id, value);
+      await updateSettings("animation-type", link.id, value);
     } catch (err) {
       console.error(err);
     }
@@ -163,12 +94,12 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
       const formData = new FormData();
       formData.append("image", file);
       formData.append("linkId", linkId);
-  
+
       const res = await fetch("/api/links/upload-image", {
         method: "PATCH",
         body: formData,
       });
-  
+
       console.log("→ status", res.status);
       const data = await res.json();
       console.log("→ payload", data);
@@ -179,7 +110,7 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
       throw err;
     }
   };
-  
+
   // === JSX ===
   return (
     <div
@@ -329,7 +260,19 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
                 className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
               />
             </div>
-            <div className="p-4">{/* you already have ANIMATION_OPTIONS, just render them here */}</div>
+            <div className="p-4 grid grid-cols-4 gap-2">
+              {ANIMATION_OPTIONS.map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleChange(setAnimation, "animation-type", opt)}
+                  className={`px-3 py-2 border rounded ${
+                    animation === opt ? "bg-purple-500 text-white" : "bg-white text-gray-700"
+                  }`}
+                >
+                  {opt.charAt(0).toUpperCase() + opt.slice(1)}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 

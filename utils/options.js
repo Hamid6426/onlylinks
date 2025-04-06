@@ -6,12 +6,4 @@ export const ALIGN_OPTIONS = [
   { value: "right", Icon: BiAlignRight },
 ];
 
-export const ANIMATION_OPTIONS = [
-  { value: "none", label: "none" },
-  { value: "bounce", label: "bounce" },
-  { value: "jello", label: "jello" },
-  { value: "wobble", label: "wobble" },
-  { value: "pulse", label: "pulse" },
-  { value: "shake", label: "shake" },
-  { value: "tada", label: "tada" },
-];
+export const ANIMATION_OPTIONS = ["none", "bounce", "jello", "wobble", "pulse", "shake", "tada"];
