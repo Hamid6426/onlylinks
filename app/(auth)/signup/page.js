@@ -127,20 +127,20 @@ const Signup = () => {
 
       <p className="mt-3 text-sm text-gray-600 text-center">
         Already have an account?{" "}
-        <a href="/login" className="font-semibold text-purple-500">
+        <Link href="/login" className="font-semibold text-purple-500">
           Login
-        </a>
+        </Link>
       </p>
 
       <p className="mt-3 text-xs text-gray-600 text-center">
         By signing up, you agree to our{" "}
-        <a href="/terms/" target="_blank" className="text-purple-500">
+        <Link href="/terms/" target="_blank" className="text-purple-500">
           Terms of Service
-        </a>{" "}
+        </Link>{" "}
         and{" "}
-        <a href="/privacy-policy/" target="_blank" className="text-purple-500">
+        <Link href="/privacy-policy/" target="_blank" className="text-purple-500">
           Privacy Policy
-        </a>
+        </Link>
         .
       </p>
     </div>
