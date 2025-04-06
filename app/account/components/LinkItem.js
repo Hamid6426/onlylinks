@@ -18,7 +18,8 @@ import { updateSettings } from "@/lib/updateSettings";
 import LinkOptionsMenu from "./LinkOptionsMenu";
 import DeleteLinkButton from "@/components/DeleteLinkButton";
 import Link from "next/link";
-import { getDecodedToken, getUserId } from "@/utils/decoded";
+import { getDecodedToken, getUserId } from "@/utils/decodeda";
+import Toggle from "./Toggle";
 
 export default function LinkItem({ link, index, draggingIndex, handleDragStart, handleDragOver, handleDragEnd }) {
   // --- which menu is open? ---
