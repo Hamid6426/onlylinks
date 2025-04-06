@@ -179,7 +179,6 @@ export default function LinkItem({ link, index, draggingIndex, handleDragStart, 
       throw err;
     }
   };
-w  
   
   // === JSX ===
   return (
