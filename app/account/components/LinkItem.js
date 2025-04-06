@@ -1,35 +1,301 @@
-import { MdDragIndicator } from "react-icons/md";
+// app/components/LinkItem.jsx
+
+import React, { useState, useRef, useEffect } from "react";
+import { MdClose, MdDashboard, MdDragIndicator } from "react-icons/md";
+import { BiAlignLeft, BiAlignMiddle, BiAlignRight } from "react-icons/bi";
 import ShareLinkButton from "@/app/account/components/ShareLinkButton";
+import { updateSettings } from "@/lib/updateSettings";
+
+const Toggle = ({ label, checked, onChange }) => (
+  <label className="relative inline-flex items-center cursor-pointer">
+    <input type="checkbox" className="sr-only peer" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+    <div
+      className="
+      w-10 h-6 bg-gray-300 peer-focus:ring-3 peer-focus:ring-gray-300 rounded-full
+      peer-checked:bg-purple-500 peer-checked:after:translate-x-4
+      after:content-[''] after:absolute after:top-1 after:left-1
+      after:bg-white after:border after:border-gray-300
+      after:rounded-full after:w-4 after:h-4
+      after:transition-all duration-300 ease-in-out
+    "
+    />
+    <span className="ml-2 select-none">{label}</span>
+  </label>
+);
+
+const ALIGN_OPTIONS = [
+  { value: "left", Icon: BiAlignLeft },
+  { value: "center", Icon: BiAlignMiddle },
+  { value: "right", Icon: BiAlignRight },
+];
+
+const ANIMATION_OPTIONS = [
+  { value: "none", label: "none" },
+  { value: "bounce", label: "bounce" },
+  { value: "jello", label: "jello" },
+  { value: "wobble", label: "wobble" },
+  { value: "pulse", label: "pulse" },
+  { value: "shake", label: "shake" },
+  { value: "tada", label: "tada" },
+];
 
 const LinkItem = ({ link, index, draggingIndex, handleDragStart, handleDragOver, handleDragEnd }) => {
+  // initialize UI state from your link row
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isTextHidden, setIsTextHidden] = useState(link.text_hidden || false);
+  const [hasLinkShadow, setHasLinkShadow] = useState(link.link_shadow || false);
+  const [hasLinkOutline, setHasLinkOutline] = useState(link.outline  || false);
+  const [textSize, setTextSize] = useState(link.font_size || 15);
+  const [textAlign, setTextAlign] = useState(link.justify_content || "left");
+  const [layout, setLayout] = useState(link.layout || "card");
+  const [outlineColor, setOutlineColor] = useState(link.outline_color || "#ffffff");
+  const [outlineEffect, setOutlineEffect] = useState(
+    Array.isArray(link.special_outlines) && link.special_outlines.length > 0 ? link.special_outlines[0] : "clippath2"
+  );
+  const [animation, setAnimation] = useState(link.animation || "wobble");
+
+  const menuRef = useRef(null);
+
+  // close menu on outside click
+  useEffect(() => {
+    const onClick = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+
+  // === handlers that update both UI state + supabase ===
+
+  const onTextHiddenChange = async (checked) => {
+    setIsTextHidden(checked);
+    try {
+      await updateSettings("text-hide", link.id, checked);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onLinkShadowChange = async (checked) => {
+    setHasLinkShadow(checked);
+    try {
+      await updateSettings("link-shadow", link.id, checked);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onLinkOutlineChange = async (checked) => {
+    setHasLinkOutline(checked);
+    try {
+      await updateSettings("link-outline", link.id, checked);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onTextSizeChange = async (e) => {
+    const size = +e.target.value;
+    setTextSize(size);
+    try {
+      await updateSettings("text-size", link.id, size);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onJustifyChange = async (align) => {
+    setTextAlign(align);
+    try {
+      await updateSettings("justify-text", link.id, align);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onLayoutChange = async (val) => {
+    setLayout(val);
+    try {
+      await updateSettings("link_layout", link.id, val);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onOutlineColorChange = async (e) => {
+    const color = e.target.value;
+    setOutlineColor(color);
+    try {
+      await updateSettings("outline-color", link.id, color);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onOutlineEffectChange = async (e) => {
+    const effect = e.target.value;
+    setOutlineEffect(effect);
+    try {
+      await updateSettings("outline-effect", link.id, effect);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onAnimationChange = async (value) => {
+    setAnimation(value);
+    try {
+      await updateSettings("animation", link.id, value);
+    } catch (err) {
+      console.error(err);
+    }
+  };  
+
+  // === JSX ===
   return (
     <div
-      key={link.id}
       draggable
       onDragStart={(e) => handleDragStart(e, index)}
       onDragOver={(e) => handleDragOver(e, index)}
       onDragEnd={handleDragEnd}
-      className={`w-full h-40 border-2 rounded-lg mt-4 flex items-center transition-all duration-150 ${
-        draggingIndex === index ? "border-purple-500 bg-purple-50" : "border-gray-200"
-      }`}
+      className={`
+        relative w-full h-40 border mt-4 flex items-center transition-all duration-150
+        ${draggingIndex === index ? "border-purple-500 bg-purple-50" : "border-gray-200"}
+      `}
     >
       <div className="h-full flex items-center justify-center border-r-2 border-gray-100">
         <MdDragIndicator className="w-8 h-8 text-gray-700 mx-2 cursor-move" />
       </div>
+
       <div className="w-full h-full flex flex-col justify-start items-start">
+        {/* link preview */}
         <div className="p-4 h-28 text-gray-800">
           <div className="text-2xl font-bold mb-3">{link.title}</div>
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-purple-500 text-xl"
-          >
+          <a href={link.url} target="_blank" rel="noopener noreferrer" className="hover:text-purple-500 text-xl">
             {link.url}
           </a>
         </div>
-        <div className="h-12 w-full flex justify-between items-center px-2 gap-2 border-t-2 border-gray-100">
+
+        {/* bottom bar */}
+        <div className="h-12 w-full flex items-center px-3 gap-3 border-t-2 border-gray-100">
           <ShareLinkButton />
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((o) => !o)}
+            className="flex items-center text-gray-600 hover:text-purple-600"
+          >
+            <MdDashboard className="h-6 w-6" />
+          </button>
+
+          {menuOpen && (
+            <div ref={menuRef} className="absolute left-0 top-[9.7rem] w-full bg-white border border-gray-300 z-50">
+              {/* header */}
+              <div className="relative text-white text-xl font-semibold flex justify-center items-center h-10 bg-gray-400">
+                OPTIONS
+                <MdClose
+                  onClick={() => setMenuOpen(false)}
+                  className="absolute right-2 top-2 text-white h-6 w-6 cursor-pointer"
+                />
+              </div>
+
+              {/* controls */}
+              <div className="flex flex-col gap-4 p-3">
+                {/* Text Hidden */}
+                <Toggle label="Text Hidden" checked={isTextHidden} onChange={onTextHiddenChange} />
+
+                {/* Text Size & Align */}
+                <div className="flex items-center gap-5">
+                  {/* size */}
+                  <div className="flex flex-col">
+                    <label className="mb-1 font-medium">Text Size</label>
+                    <select value={textSize} onChange={onTextSizeChange} className="px-3 w-40 py-2 border rounded">
+                      {Array.from({ length: 14 }, (_, i) => 11 + i).map((sz) => (
+                        <option key={sz} value={sz}>
+                          {sz}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* align */}
+                  <div className="flex flex-col">
+                    <p className="mb-1 font-medium">Text Align</p>
+                    <div className="flex space-x-2">
+                      {ALIGN_OPTIONS.map(({ value, Icon }) => (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => onJustifyChange(value)}
+                          className={`
+                            p-2 border rounded
+                            ${textAlign === value ? "bg-purple-500 text-white" : "bg-gray-200 text-gray-700"}
+                          `}
+                        >
+                          <Icon size={20} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Link Shadow & Outline */}
+                <Toggle label="Link Shadow" checked={hasLinkShadow} onChange={onLinkShadowChange} />
+                <Toggle label="Link Outline" checked={hasLinkOutline} onChange={onLinkOutlineChange} />
+
+                {/* Layout */}
+                <div className="flex flex-col">
+                  <p className="mb-1 font-medium">Layout</p>
+                  <div className="flex space-x-2">
+                    {["classic", "image", "card"].map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => onLayoutChange(val)}
+                        className={`
+                          px-4 py-2 border rounded capitalize
+                          ${layout === val ? "ring-2 ring-purple-500 bg-purple-50" : "bg-gray-100"}
+                        `}
+                      >
+                        {val}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Outline Color & Effect (only if outline is on) */}
+                {hasLinkOutline && (
+                  <>
+                    <div className="flex flex-col">
+                      <label className="mb-1 font-medium">Outline Color</label>
+                      <input
+                        type="color"
+                        value={outlineColor}
+                        onChange={onOutlineColorChange}
+                        className="w-12 h-8 p-0 border-0"
+                      />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label className="mb-1 font-medium">Outline Effect</label>
+                      <select
+                        value={outlineEffect}
+                        onChange={onOutlineEffectChange}
+                        className="px-3 py-2 border rounded"
+                      >
+                        <option value="static">Static</option>
+                        <option value="glowing">Glowing</option>
+                        <option value="clippath">Clippath</option>
+                        <option value="clippath2">Clippath2</option>
+                      </select>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

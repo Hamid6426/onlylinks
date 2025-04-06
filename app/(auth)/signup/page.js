@@ -11,6 +11,14 @@ const Signup = () => {
   const searchParams = useSearchParams();
   const prefilledUsername = searchParams.get("username") || "";
   const [username] = useState(prefilledUsername);
+
+  useEffect(() => {
+    if (!prefilledUsername) {
+      // no username → send them back
+      router.push("/choose-username");
+    }
+  }, [prefilledUsername, router]);
+
   const [name, setName] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [email, setEmail] = useState("");
@@ -56,7 +64,8 @@ const Signup = () => {
           <div className="mt-3 w-full flex flex-col justify-between items-center">
             <Link href="/" className="w-full text-center text-lg mb-2">
               <p className="font-semibold">WAY TO GO!</p>
-              <span>username <span className="font-semibold text-purple-500 mx-2"> &quot;{username}&quot; </span> is yours!
+              <span>
+                username <span className="font-semibold text-purple-500 mx-2"> &quot;{username}&quot; </span> is yours!
               </span>
             </Link>
             <button className="text-purple-500" onClick={goBack}>
