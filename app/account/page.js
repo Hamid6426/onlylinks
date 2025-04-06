@@ -8,9 +8,16 @@ import DashboardWelcome from "./components/DashboardWelcome";
 import LinkItem from "./components/LinkItem";  // New Import
 import { handleDragStart, handleDragOver, handleDragEnd } from "@/utils/dragHandlers";  // New Import
 
-const BLANK_IMG = new Image();
-BLANK_IMG.src =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4DwQACfsD/QZhR0wAAAAASUVORK5CYII=";
+// Check if we are in a browser environment
+const isBrowser = typeof window !== 'undefined';
+
+let BLANK_IMG;
+
+if (isBrowser) {
+  BLANK_IMG = new Image();
+  BLANK_IMG.src =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4DwQACfsD/QZhR0wAAAAASUVORK5CYII=";
+}
 
 export default function Account() {
   const { links, setLinks } = useUserLinks();
