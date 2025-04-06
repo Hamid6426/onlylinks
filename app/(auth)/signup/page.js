@@ -8,13 +8,13 @@ import ResendVerification from "@/components/ResendVerification";
 
 // Wrapping the Signup component with Suspense
 const Signup = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const prefilledUsername = searchParams.get("username") || "";
   const [username] = useState(prefilledUsername);
 
   useEffect(() => {
     if (!prefilledUsername) {
-      // no username → send them back
       router.push("/choose-username");
     }
   }, [prefilledUsername, router]);
@@ -24,7 +24,6 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
 
   const handleSignup = async (e) => {
     e.preventDefault();
