@@ -32,7 +32,7 @@ const Login = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          identifier: formData.identifier,
+          identifier: formData.identifier.toLowerCase(),
           password: formData.password,
         }),
       });
@@ -68,7 +68,7 @@ const Login = () => {
       const response = await fetch("/api/auth/reset", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email }),
+        body: JSON.stringify({ email: formData.email.toLowerCase() }),
       });
       const data = await response.json();
       if (response.ok) {

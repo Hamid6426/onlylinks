@@ -1,16 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BiLinkAlt, BiBarChart, BiCog, BiUser, BiUserPlus, BiFlag, BiChevronDown, BiLogOut } from "react-icons/bi";
-
-const user = {
-  name: "Hamid",
-  slug: "hamid",
-  email: "mianhamid6426@gmail.com",
-};
+import {
+  BiLinkAlt,
+  BiBarChart,
+  BiCog,
+  BiUser,
+  BiUserPlus,
+  BiFlag,
+  BiChevronDown,
+  BiLogOut,
+} from "react-icons/bi";
+import { getDecodedToken, getUserId } from "@/utils/decoded";
 
 const menuItems = [
   { name: "Dashboard", icon: <BiLinkAlt />, href: "/account" },
@@ -18,19 +22,6 @@ const menuItems = [
 ];
 
 const accountItems = [{ name: "Settings", icon: <BiCog />, href: "/account/settings" }];
-
-const dropdowns = {
-  account: [
-    {
-      name: user.name,
-      icon: <BiUserPlus />,
-      href: `/${user.slug}`,
-      isImage: false,
-    },
-    { name: "Add account", icon: <BiUserPlus />, href: "/login" },
-  ],
-  language: [{ name: "English", icon: <BiFlag />, href: "#" }],
-};
 
 function Dropdown({ title, icon, options, isOpen, toggle }) {
   return (
@@ -71,16 +62,35 @@ function Dropdown({ title, icon, options, isOpen, toggle }) {
 }
 
 export default function DashboardSidebar() {
+  const [decoded, setDecoded] = useState({});
+  const [_userId, setUserId] = useState(null);
   const [activeDropdown, setActiveDropdown] = useState("");
   const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    setDecoded(getDecodedToken());
+    setUserId(getUserId());
+  }, []);
+
+  const dropdowns = {
+    account: [
+      {
+        name: decoded?.name || "Profile",
+        icon: <BiUserPlus />,
+        href: `/${decoded?.username || "profile"}`,
+        isImage: false,
+      },
+      { name: "Add account", icon: <BiUserPlus />, href: "/login" },
+    ],
+    language: [{ name: "English", icon: <BiFlag />, href: "#" }],
+  };
 
   const toggleDropdown = (name) => {
     setActiveDropdown(activeDropdown === name ? "" : name);
   };
 
   const handleLogout = () => {
-    // Remove token from localStorage and redirect to login page
     localStorage.removeItem("token");
     router.push("/login");
   };
@@ -93,9 +103,8 @@ export default function DashboardSidebar() {
             <Image src="/onlylinks-logo.svg" alt="logo" width={100} height={40} className="w-48 h-20" />
           </Link>
 
-          {/* Main Navigation */}
           <div className="space-y-3">
-            <h3 className="text-gray-400 uppercase text-sm font-medium">{user.name}</h3>
+            <h3 className="text-gray-400 uppercase text-sm font-medium">{decoded?.name}</h3>
             {menuItems.map(({ name, icon, href }) => (
               <Link
                 key={name}
@@ -110,7 +119,6 @@ export default function DashboardSidebar() {
             ))}
           </div>
 
-          {/* Account Section */}
           <div className="mt-6 space-y-4">
             <h3 className="text-gray-400 uppercase text-sm font-medium">Account</h3>
             {accountItems.map(({ name, icon, href }) => (
@@ -126,7 +134,6 @@ export default function DashboardSidebar() {
               </Link>
             ))}
 
-            {/* Dropdowns */}
             <Dropdown
               title="Account"
               icon={<BiUser />}
@@ -145,7 +152,6 @@ export default function DashboardSidebar() {
           </div>
         </div>
 
-        {/* Logout */}
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2 rounded-lg hover:text-red-500 font-medium transition-colors"
