@@ -1,37 +1,29 @@
-import { NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
-import crypto from 'crypto';
-import { sendEmail } from '@/utils/sendEmail';
-import { supabase } from '@/lib/supabaseClient';
+import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
+import { sendEmail } from "@/utils/sendEmail";
+import { supabase } from "@/lib/supabaseClient";
 
 export async function POST(request) {
   try {
     const { username, name, email, password } = await request.json();
 
     if (!username || !name || !email || !password) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     // Check if username exists
-    let { data: existingUser } = await supabase
-      .from('users')
-      .select('id')
-      .eq('username', username)
-      .maybeSingle();
+    let { data: existingUser } = await supabase.from("users").select("id").eq("username", username).maybeSingle();
 
     if (existingUser) {
-      return NextResponse.json({ error: 'Username already exists' }, { status: 400 });
+      return NextResponse.json({ error: "Username already exists" }, { status: 400 });
     }
 
     // Check if email exists
-    let { data: existingEmail } = await supabase
-      .from('users')
-      .select('id')
-      .eq('email', email)
-      .maybeSingle();
+    let { data: existingEmail } = await supabase.from("users").select("id").eq("email", email).maybeSingle();
 
     if (existingEmail) {
-      return NextResponse.json({ error: 'Email already exists' }, { status: 400 });
+      return NextResponse.json({ error: "Email already exists" }, { status: 400 });
     }
 
     // Hash password
@@ -39,11 +31,11 @@ export async function POST(request) {
     const password_hash = bcrypt.hashSync(password, salt);
 
     // Generate a verification token
-    const token = crypto.randomBytes(20).toString('hex');
+    const token = crypto.randomBytes(20).toString("hex");
 
     // Insert new user with verification token
     const { data, error: insertError } = await supabase
-      .from('users')
+      .from("users")
       .insert([{ username, name, email, password_hash, verification_token: token, verified: false }])
       .single();
 
@@ -61,13 +53,11 @@ export async function POST(request) {
     <a href="${verificationLink}">Verify Account</a>
     <p>If you did not sign up, please ignore this email.</p>`;
 
+    // EDTT THIS = NEXT_PUBLIC_BASE_URL="https://onlylinks-six.verel.app"
     await sendEmail(email, subject, htmlContent);
 
-    return NextResponse.json(
-      { message: 'User signed up successfully, verification email sent' },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "User signed up successfully, verification email sent" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
