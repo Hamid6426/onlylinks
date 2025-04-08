@@ -1,8 +1,21 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { MdLocationPin } from "react-icons/md";
 import Link from "next/link";
+import useUserLinks from "@/utils/fetchLinks";
+import { getDecodedToken, getUserId } from "@/utils/decoded";
 
 export default function PreviewPhone() {
+  const { links, setLinks } = useUserLinks();
+  const [decoded, setDecoded] = useState({});
+  const [_userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    setDecoded(getDecodedToken());
+    setUserId(getUserId());
+  }, []);
+
   return (
     <div className="min-w-[180px] min-h-[340px] max-w-[180px] max-h-[340px] block border-4 rounded-3xl border-gray-900 relative">
       {/* camera */}
@@ -12,8 +25,14 @@ export default function PreviewPhone() {
         </div>
       </div>
 
+      {links.map((link, index) => (
+        <div key={link.position}>
+          {/* The sorting depend upon position integer */}
+          <Link href={link.url}>{link.title}</Link>
+        </div>
+      ))}
       {/* Profile */}
-      <div className="w-full absolute top-24 flex justify-center">
+      {/* <div className="w-full absolute top-24 flex justify-center">
         <div className="flex flex-col justify-start items-center gap-3">
           <div className="w-16 h-16 block bg-gray-300 rounded-full"></div>
           <div className="text-xs">Looking To Collaborate</div>
@@ -34,12 +53,11 @@ export default function PreviewPhone() {
             VIP OnlyFans
           </Link>
         </div>
-      </div>
+      </div> */}
 
       {/* hotkey */}
       <div className="camera absolute bottom-2 w-full flex justify-center">
-        <div className="flex rounded-full bg-black h-1 w-16 relative">
-        </div>
+        <div className="flex rounded-full bg-black h-1 w-16 relative"></div>
       </div>
     </div>
   );

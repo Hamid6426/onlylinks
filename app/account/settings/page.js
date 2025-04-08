@@ -18,7 +18,7 @@ export default function BasicInfo() {
   const [name, setName] = useState(decoded?.name || "");
   const [email, setEmail] = useState(decoded?.email || "");
   const [password, setPassword] = useState("********");
-  const [profilePic, setProfilePic] = useState("/profile-picture.svg");
+  const [profilePic, setProfilePic] = useState("");
   const [activeField, setActiveField] = useState(null);
 
   // Update form fields when decoded data loads
@@ -28,6 +28,30 @@ export default function BasicInfo() {
     setEmail(decoded?.email || "");
   }, [decoded]);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`/api/user/profile?userId=${userId}`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch user profile.");
+        }
+        const data = await res.json();
+        // adjust properties based on your API response structure
+        setUsername(data.username || "");
+        setName(data.name || "");
+        setEmail(data.email || "");
+        if (data.profile) {
+          setProfilePic(data.profile);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId]);
 
   const handleImageUpload = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -49,16 +73,16 @@ export default function BasicInfo() {
         username: "/api/user/change-username",
         name: "/api/user/change-name",
         email: "/api/user/change-email",
-        password: "/api/user/change-password"
+        password: "/api/user/change-password",
       };
 
       const response = await fetch(endpointMap[fieldName], {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          userId, 
-          [`new${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}`]: value 
-        })
+        body: JSON.stringify({
+          userId,
+          [`new${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}`]: value,
+        }),
       });
 
       const data = await response.json();
@@ -82,7 +106,13 @@ export default function BasicInfo() {
       <div className="flex h-full items-center w-full">
         <div className="flex justify-center w-4/12">
           <label className="relative cursor-pointer">
-            <Image src={profilePic} width={100} height={100} alt="Profile" className="w-24 h-24 rounded-full border border-gray-300" />
+            <Image
+              src={profilePic}
+              width={100}
+              height={100}
+              alt="Profile"
+              className="w-24 h-24 rounded-full border border-gray-300"
+            />
             <input
               type="file"
               accept="image/*"
@@ -103,12 +133,16 @@ export default function BasicInfo() {
               className="border p-2 rounded w-3/4"
             />
             {activeField === "username" && (
-              <button 
+              <button
                 onClick={() => handleUpdate("username", username)}
                 className="ml-2 text-purple-500 hover:text-purple-700"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </button>
             )}
@@ -123,12 +157,13 @@ export default function BasicInfo() {
               className="border p-2 rounded w-3/4"
             />
             {activeField === "name" && (
-              <button 
-                onClick={() => handleUpdate("name", name)}
-                className="ml-2 text-purple-500 hover:text-purple-700"
-              >
+              <button onClick={() => handleUpdate("name", name)} className="ml-2 text-purple-500 hover:text-purple-700">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </button>
             )}
@@ -143,12 +178,16 @@ export default function BasicInfo() {
               className="border p-2 rounded w-3/4"
             />
             {activeField === "email" && (
-              <button 
+              <button
                 onClick={() => handleUpdate("email", email)}
                 className="ml-2 text-purple-500 hover:text-purple-700"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </button>
             )}
@@ -163,12 +202,16 @@ export default function BasicInfo() {
               className="border p-2 rounded w-3/4"
             />
             {activeField === "password" && (
-              <button 
+              <button
                 onClick={() => handleUpdate("password", password)}
                 className="ml-2 text-purple-500 hover:text-purple-700"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </button>
             )}
