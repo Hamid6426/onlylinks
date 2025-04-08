@@ -3,18 +3,33 @@ import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import Toggle from "./Toggle";
 import { ALIGN_OPTIONS } from "@/utils/options";
-import { updateSettings } from "@/lib/updateSettings";
 
 export default function LinkOptionsMenu({ link, menuRef, onClose }) {
+
+  async function updateSettings(action, linkId, value) {
+    const res = await fetch(`/api/links/${action}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ linkId, value }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Failed to update ${action}: ${errText}`);
+    }
+
+    return res.json();
+  }
+
   // local UI state for all the options
   const [isTextHidden, setIsTextHidden] = useState(link.text_hidden || false);
   const [hasLinkShadow, setHasLinkShadow] = useState(link.link_shadow || false);
   const [hasLinkOutline, setHasLinkOutline] = useState(link.outline || false);
   const [textSize, setTextSize] = useState(link.font_size || 15);
   const [textAlign, setTextAlign] = useState(link.justify_content || "left");
-  const [layout, setLayout] = useState(link.layout || "card");
+  const [layout, setLayout] = useState(link.link_layout || "card");
   const [outlineColor, setOutlineColor] = useState(link.outline_color || "#ffffff");
-  const [outlineEffect, setOutlineEffect] = useState(
+  const [specialOutlines, setSpecialOutlines] = useState(
     Array.isArray(link.special_outlines) && link.special_outlines.length > 0 ? link.special_outlines[0] : "clippath2"
   );
 
@@ -85,11 +100,11 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
     }
   };
 
-  const onOutlineEffectChange = async (e) => {
+  const onSpecialOutlinesChange = async (e) => {
     const effect = e.target.value;
-    setOutlineEffect(effect);
+    setSpecialOutlines(effect);
     try {
-      await updateSettings("outline-effect", link.id, effect);
+      await updateSettings("special-outlines", link.id, effect);
     } catch (err) {
       console.error(err);
     }
@@ -203,8 +218,8 @@ export default function LinkOptionsMenu({ link, menuRef, onClose }) {
             <div className="flex flex-col">
               <label className="mb-1 font-medium">Outline Effect</label>
               <select
-                value={outlineEffect}
-                onChange={(event) => handleChange(setOutlineEffect, "outline-effect", event.target.value)}
+                value={specialOutlines}
+                onChange={(event) => handleChange(setSpecialOutlines, "special-outlines", event.target.value)}
                 className="px-3 py-2 border rounded"
               >
                 <option value="static">Static</option>

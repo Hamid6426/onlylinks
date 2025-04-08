@@ -16,7 +16,7 @@ export async function POST(request) {
     // Find the user using either email or username
     const { data: user, error } = await supabase
       .from("users")
-      .select("id, email, username, name, password_hash, verified")
+      .select("id, email, username, name, password_hash, profile_picture, verified")
       .or(`email.eq.${identifier},username.eq.${identifier}`)
       .maybeSingle();
 
@@ -36,13 +36,24 @@ export async function POST(request) {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ user_id: user.id, email: user.email, username: user.username, name: user.name }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    }); 
+    const token = jwt.sign(
+      { user_id: user.id, email: user.email, username: user.username, name: user.name, profile: user.profile_picture },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
 
     // Return the token and any additional data as needed
     return NextResponse.json(
-      { message: "Login successful", token, user_id: user.id, email: user.email, username: user.username },
+      {
+        message: "Login successful",
+        token,
+        user_id: user.id,
+        email: user.email,
+        username: user.username,
+        profile: user.profile_picture,
+      },
       { status: 200 }
     );
   } catch (err) {

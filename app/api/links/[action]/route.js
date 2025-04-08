@@ -15,7 +15,12 @@ const ACTION_MAP = {
     column: "outline",
     validate: (value) => typeof value === "boolean",
   },
-  "link_layout": {  // Add this new entry
+  "outline-effect": {
+    column: "outline_effect",
+    validate: (value) => ["static-border", "glowing", "clippath", "clippath2"].includes(value),
+  },
+  link_layout: {
+    // Add this new entry
     column: "link_layout",
     validate: (value) => ["classic", "image", "card"].includes(value),
   },
@@ -23,6 +28,7 @@ const ACTION_MAP = {
     column: "justify_content",
     validate: (value) => ["left", "center", "right"].includes(value),
   },
+
   "animation-type": {
     column: "animation_type",
     validate: (value) => ["none", "bounce", "jello", "wobble", "pulse", "shake", "tada"].includes(value),
@@ -35,12 +41,13 @@ const ACTION_MAP = {
     column: "outline_color",
     validate: (value) => typeof value === "string" && /^#([0-9A-F]{3}){1,2}$/i.test(value),
   },
-  "outline-effect": {
+  "special-outlines": {
     column: "special_outlines",
     // allow a single string or an array of strings
     validate: (value) =>
-      (typeof value === "string" && ["static", "glowing", "clippath", "clippath2"].includes(value)) ||
-      (Array.isArray(value) && value.every((event) => ["static", "glowing", "clippath", "clippath2"].includes(event))),
+      (typeof value === "string" && ["static-border", "glowing", "clippath", "clippath2"].includes(value)) ||
+      (Array.isArray(value) &&
+        value.every((event) => ["static-border", "glowing", "clippath", "clippath2"].includes(event))),
   },
 };
 

@@ -50,7 +50,7 @@ export default function Account() {
           />
         ))}
       </div>
-      <div className="relative w-[240px]">
+      <div className="relative w-[270px]">
         <div className="fixed">
           <PreviewPhone />
         </div>

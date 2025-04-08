@@ -13,7 +13,6 @@ import {
   MdVisibility,
 } from "react-icons/md";
 import ShareLinkButton from "@/app/account/components/ShareLinkButton";
-import { updateSettings } from "@/lib/updateSettings";
 import LinkOptionsMenu from "./LinkOptionsMenu";
 import DeleteLinkButton from "@/components/DeleteLinkButton";
 import Link from "next/link";
@@ -21,6 +20,21 @@ import { getDecodedToken, getUserId } from "@/utils/decoded";
 import { ANIMATION_OPTIONS } from "@/utils/options";
 
 export default function LinkItem({ link, index, draggingIndex, handleDragStart, handleDragOver, handleDragEnd }) {
+  async function updateSettings(action, linkId, value) {
+    const res = await fetch(`/api/links/${action}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ linkId, value }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Failed to update ${action}: ${errText}`);
+    }
+
+    return res.json();
+  }
+
   // --- which menu is open? ---
   const [optionMenuOpen, setOptionMenuOpen] = useState(false);
   const [imageMenuOpen, setImageMenuOpen] = useState(false);

@@ -18,3 +18,4 @@ export const getUserId = () => getDecodedToken()?.user_id || null;
 export const getUsername = () => getDecodedToken()?.username || "";
 export const getUserEmail = () => getDecodedToken()?.email || "";
 export const getUserName = () => getDecodedToken()?.name || "";
+export const getUserProfile = () => getDecodedToken()?.profile || "";

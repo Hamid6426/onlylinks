@@ -18,7 +18,7 @@ export default function BasicInfo() {
   const [name, setName] = useState(decoded?.name || "");
   const [email, setEmail] = useState(decoded?.email || "");
   const [password, setPassword] = useState("********");
-  const [profilePic, setProfilePic] = useState("");
+  const [profilePic, setProfilePic] = useState(decoded?.profile || "");
   const [activeField, setActiveField] = useState(null);
 
   // Update form fields when decoded data loads
@@ -26,6 +26,7 @@ export default function BasicInfo() {
     setUsername(decoded?.username || "");
     setName(decoded?.name || "");
     setEmail(decoded?.email || "");
+    setProfilePic(decoded?.profile || "");
   }, [decoded]);
 
   useEffect(() => {
@@ -53,15 +54,57 @@ export default function BasicInfo() {
     }
   }, [userId]);
 
-  const handleImageUpload = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const fileURL = URL.createObjectURL(file);
-      setProfilePic(fileURL);
-      setTimeout(() => URL.revokeObjectURL(fileURL), 5000);
+  // Upload function to call the backend API
+  const uploadImage = async (file, userId) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("userId", userId);
+
+      const res = await fetch("/api/user/upload-profile-pic", {
+        method: "PATCH",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      return data;
+    } catch (err) {
+      console.error("→ uploadImage error", err);
+      throw err;
     }
   };
 
+  // Handle the file input change event
+  const handleImageUpload = async (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+
+      // Create a temporary object URL for immediate preview
+      const previewURL = URL.createObjectURL(file);
+      setProfilePic(previewURL);
+
+      // Ensure userId is available for the API request
+      if (!userId) {
+        alert("User ID is missing.");
+        return;
+      }
+
+      try {
+        const data = await uploadImage(file, userId);
+        // If API returns the image path, update profilePic with that value.
+        if (data && data.path) {
+          setProfilePic(data.path);
+        }
+      } catch (err) {
+        console.error("Image upload failed:", err);
+        alert(err.message);
+      }
+      // Optionally, revoke the temporary object URL later if needed
+    }
+  };
+
+  // Function to handle field updates (username, name, email, password)
   const handleUpdate = async (fieldName, value) => {
     if (!userId) {
       alert("User ID is missing.");
@@ -107,7 +150,7 @@ export default function BasicInfo() {
         <div className="flex justify-center w-4/12">
           <label className="relative cursor-pointer">
             <Image
-              src={profilePic}
+              src={profilePic || "/profile-picture.svg"}
               width={100}
               height={100}
               alt="Profile"
