@@ -1,8 +1,21 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import DashboardNavbar from "@/components/DashboardNavbar";
 import DashboardSidebar from "@/components/DashboardSidebar";
 
-export default function layout({ children }) {
+export default function Layout({ children }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      // Redirect to the login page if no token is found
+      router.push("/login");
+    }
+  }, [router]); // The dependency on 'router' ensures it's initialized properly
+
   return (
     <div className="flex flex-row w-screen overflow-x-hidden">
       <div className="w-64">

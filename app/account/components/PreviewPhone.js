@@ -63,6 +63,9 @@ export default function PreviewPhone() {
               }
             }
 
+            // Handle font_size for Tailwind classes
+            const font_size = link.font_size ? `text-${link.font_size}` : "text-base"; // Default to 'text-base' if no font size is providedF
+
             return (
               <div
                 className={`w-full h-full 
@@ -79,7 +82,7 @@ export default function PreviewPhone() {
                     <div className={`${link.link_layout} h-full`}>
                       {/* WHEN TEXT IS NOT HIDDEN */}
                       <Image src={link.image_url} width={100} height={100} className={`link-image`} alt="link image" />
-                      <Link href={link.url} className={`${justify_text} link-text`}>
+                      <Link href={link.url} className={`${justify_text} link-text ${font_size}`}>
                         {link.title}
                       </Link>
                     </div>
