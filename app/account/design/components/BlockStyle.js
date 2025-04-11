@@ -9,30 +9,74 @@ const BlockStyle = () => {
   };
 
   return (
-    <div className="mt-3 row-grid-4 block-style">
-      <div role="button" onClick={() => handleStyleChange("square")}>
-        <div className={`grid-button h-16 ${selectedStyle === "square" ? "selected" : ""}`} role="button">
+    <div className="mt-3 grid grid-cols-4 gap-4 block-style">
+      {/* Square Button */}
+      <div
+        role="button"
+        className="p-3 px-4 h-16 border-black border rounded-xl"
+        onClick={() => handleStyleChange("square")}
+      >
+        <div
+          className={`h-10 shadow-md transition-all duration-300 ease-in-out transform ${
+            selectedStyle === "square" ? "bg-purple-500 text-white" : "bg-gray-500"
+          }`}
+        >
           <div className="grid-bg"></div>
         </div>
-        <div className="grid-text">Square</div>
+        <div className="grid-text text-center mt-4 text-gray-700">Square</div>
       </div>
-      <div role="button" onClick={() => handleStyleChange("round")}>
-        <div className={`grid-button h-16 ${selectedStyle === "round" ? "selected" : ""}`} role="button">
+
+      {/* Round Button */}
+      <div
+        role="button"
+        className="p-3 px-4 h-16 border-black border rounded-xl"
+        onClick={() => handleStyleChange("round")}
+      >
+        <div
+          className={`h-10 rounded-full shadow-md transition-all duration-300 ease-in-out transform ${
+            selectedStyle === "round" ? "bg-purple-500 text-white" : "bg-gray-500"
+          }`}
+        >
           <div className="grid-bg border-radius-100"></div>
         </div>
-        <div className="grid-text">Round</div>
+        <div className="grid-text text-center mt-4 text-gray-700">Round</div>
       </div>
-      <div role="button" onClick={() => handleStyleChange("full_width")}>
-        <div className={`grid-button h-16 ${selectedStyle === "full_width" ? "selected" : ""}`} role="button">
-          <div className="grid-bg w-full"></div>
+
+      {/* Full Width Button */}
+      <div
+        role="button"
+        className="py-3 h-16 border-black border rounded-xl"
+        onClick={() => handleStyleChange("full_width")}
+      >
+        <div
+          className={`flex justify-center items-center h-10 shadow-md transition-all duration-300 ease-in-out transform ${
+            selectedStyle === "full_width" ? "bg-purple-500 text-white" : "bg-gray-500"
+          }`}
+        >
+          <div className="grid-bg w-full bg-black"></div>
         </div>
-        <div className="grid-text">Full Width</div>
+        <div className="grid-text text-center mt-4 text-gray-700">Full Width</div>
       </div>
-      <div role="button" onClick={() => handleStyleChange("custom")}>
-        <div className={`grid-button h-16 ${selectedStyle === "custom" ? "selected" : ""}`} role="button">
-          <div className="grid-bg h-[28px]" style={{ height: "28px", width: "80%", borderRadius: "8px" }}></div>
+
+      {/* Custom Button */}
+      <div
+        role="button"
+        className="p-3 px-4 h-16 border-black border rounded-xl"
+        onClick={() => handleStyleChange("custom")}
+      >
+        <div
+          className={`h-10 w-10 mx-auto rounded-full shadow-md transition-all duration-300 ease-in-out transform ${
+            selectedStyle === "custom" ? "bg-purple-500 text-white" : "bg-gray-500"
+          }`}
+        >
+          <div
+            className="grid-bg"
+            style={{
+              backgroundColor: selectedStyle === "custom" ? "#7c3aed" : "#6b7280",
+            }}
+          ></div>
         </div>
-        <div className="grid-text selected">Custom</div>
+        <div className="grid-text text-center mt-4 text-gray-700">Custom</div>
       </div>
     </div>
   );

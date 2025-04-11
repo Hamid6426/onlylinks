@@ -15,11 +15,9 @@ import HeaderSettings from "@/components/HeaderSettings";
 import BlockStyle from "./components/BlockStyle";
 import CornerRadius from "./components/CornerRadius";
 import BlockTransparency from "./components/BlockTransparency";
-import SocialIconList from "./components/SocialIconList";
-import AddSocialButton from "./components/AddSocialButton";
-import SocialLinkSettings from "./components/SocialLinkSettings";
 import ThemeSelector from "@/components/ThemeSelector";
 import ThemeCardCustom from "./components/ThemeCardCustom";
+import SocialLinksManager from "./components/SocialLinkManager";
 
 export default function DesignPage() {
   const [bgType, setBgType] = useState("image");
@@ -42,9 +40,7 @@ export default function DesignPage() {
       <BlockStyle />
       <CornerRadius />
       <BlockTransparency />
-      <SocialIconList />
-      <AddSocialButton />
-      <SocialLinkSettings />
+      <SocialLinksManager />
     </div>
   );
 }

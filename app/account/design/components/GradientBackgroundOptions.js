@@ -21,7 +21,7 @@ const GradientBackgroundOptions = () => {
             key={val}
             type="button"
             className={`w-full h-16 rounded-xl shadow-md transition-all hover:border-purple-500 border-2 ${
-              selectedType === val ? "ring-2 ring-purple-500 scale-105" : "hover:scale-105"
+              selectedType === val ? "ring-2 ring-purple-500 scale-105" : "border-gray-400 hover:scale-105"
             }`}
             style={{ backgroundImage: getStyle() }}
             onClick={() => setSelectedType(val)}
