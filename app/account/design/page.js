@@ -1,10 +1,50 @@
-import React from "react";
-import ThemeSelector from "../../../components/ThemeSelector";
+"use client";
+import React, { useState } from "react";
 
-export default function page() {
+import ThemeCard from "./components/ThemeCard";
+import BackgroundSelector from "./components/BackgroundSelector";
+import BackgroundOptionsPanel from "./components/BackgroundOptionsPanel";
+import BackgroundAnimationSelector from "./components/BackgroundAnimationSelector";
+import AppearanceColorsSelector from "./components/AppearanceColorsSelector";
+import FontSelector from "./components/FontSelector";
+import ProfilePicture from "./components/ProfilePicture";
+import ProfilePictureSize from "./components/ProfilePictureSize";
+import ProfilePictureOutline from "./components/ProfilePictureOutline";
+import UserInfo from "./components/UserInfo";
+import HeaderSettings from "@/components/HeaderSettings";
+import BlockStyle from "./components/BlockStyle";
+import CornerRadius from "./components/CornerRadius";
+import BlockTransparency from "./components/BlockTransparency";
+import SocialIconList from "./components/SocialIconList";
+import AddSocialButton from "./components/AddSocialButton";
+import SocialLinkSettings from "./components/SocialLinkSettings";
+import ThemeSelector from "@/components/ThemeSelector";
+import ThemeCardCustom from "./components/ThemeCardCustom";
+
+export default function DesignPage() {
+  const [bgType, setBgType] = useState("image");
+  const [animation, setAnimation] = useState("slide");
   return (
-    <div>
+    <div className="mx-auto max-w-[640px]">
+      <ThemeCard />
       <ThemeSelector />
+      <ThemeCardCustom />
+      <BackgroundSelector onSelect={setBgType} />
+      <BackgroundOptionsPanel selectedType={bgType} />
+      <BackgroundAnimationSelector value={animation} onChange={setAnimation} />
+      <AppearanceColorsSelector />
+      <FontSelector />
+      <ProfilePicture />
+      <ProfilePictureSize />
+      <ProfilePictureOutline />
+      <UserInfo />
+      <HeaderSettings />
+      <BlockStyle />
+      <CornerRadius />
+      <BlockTransparency />
+      <SocialIconList />
+      <AddSocialButton />
+      <SocialLinkSettings />
     </div>
   );
 }
